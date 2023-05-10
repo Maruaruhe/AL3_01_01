@@ -4,16 +4,39 @@
 
 GameScene::GameScene() {}
 
-GameScene::~GameScene() {}
+GameScene::~GameScene() {
+	delete sprite;
+	delete model;
+}
 
 void GameScene::Initialize() {
-
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+
+	pic = TextureManager::Load("sample.png");
+	soundData = audio_->LoadWave("fanfare.wav");
+
+	audio_->PlayWave(soundData);
+
+	voiceHandle = audio_->PlayWave(soundData, true);
+	sprite = Sprite::Create(pic, {100, 50});
+	model = Model::Create();
+
+	worldTransform.Initialize();
+	viewProjection.Initialize();
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+	Vector2 position = sprite->GetPosition();
+	position.x += 2.0f;
+	position.y += 1.0f;
+	sprite->SetPosition(position);
+
+	if (input_->TriggerKey(DIK_SPACE)) {
+		audio_->StopWave(voiceHandle);
+	}
+}
 
 void GameScene::Draw() {
 
@@ -41,7 +64,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-
+	model->Draw(worldTransform, viewProjection, pic);
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion
@@ -53,7 +76,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-
+	sprite->Draw();
 	// スプライト描画後処理
 	Sprite::PostDraw();
 
