@@ -6,17 +6,27 @@ GameScene::GameScene() {
 }
 
 GameScene::~GameScene() { 
+	delete sprite_;
+	delete model_;
+	delete player_;
 }
 
 void GameScene::Initialize() {
+	character = TextureManager::Load("NineFox.png");
+
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
-
-	Character = TextureManager::Load("NineFox.png");
+	sprite_ = Sprite::Create(character, {100, 50});
+	worldTransform_.Initialize();
+	viewProjection_.Initialize();
+	model_ = Model::Create();
+	player_ = new Player();
+	player_->Initialize(model_,character);
 }
 
 void GameScene::Update() { 
+	player_->Update();
 }
 
 void GameScene::Draw() {
@@ -45,7 +55,9 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-	
+	//model_->Draw(worldTransform_, viewProjection_, character);
+	player_->Draw(viewProjection_);
+
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion
@@ -57,7 +69,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	
+	/*sprite_->Draw();*/
 	// スプライト描画後処理
 	Sprite::PostDraw();
 
