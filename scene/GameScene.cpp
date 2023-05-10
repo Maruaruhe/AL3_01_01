@@ -6,37 +6,15 @@ GameScene::GameScene() {
 }
 
 GameScene::~GameScene() { 
-	delete sprite;
-	delete model;
 }
 
 void GameScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
-
-	pic = TextureManager::Load("sample.png");
-	soundData = audio_->LoadWave("fanfare.wav");
-
-	audio_->PlayWave(soundData);
-
-	voiceHandle = audio_->PlayWave(soundData, true);
-	sprite = Sprite::Create(pic, {100, 50});
-	model = Model::Create();
-
-	worldTransform.Initialize();
-	viewProjection.Initialize();
 }
 
 void GameScene::Update() { 
-	Vector2 position = sprite->GetPosition();
-	position.x += 2.0f;
-	position.y += 1.0f;
-	sprite->SetPosition(position);
-
-	if (input_->TriggerKey(DIK_SPACE)) {
-	audio_->StopWave(voiceHandle);
-	}
 }
 
 void GameScene::Draw() {
