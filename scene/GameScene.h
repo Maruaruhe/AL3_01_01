@@ -47,16 +47,6 @@ private: // メンバ変数
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 
-	uint32_t pic = 0;
-	uint32_t soundData = 0;
-
-	uint32_t voiceHandle = 0;
-
-	Sprite* sprite = nullptr;
-	Model* model = nullptr;
-
-	WorldTransform worldTransform;
-	ViewProjection viewProjection;
 
 	/// <summary>
 	/// ゲームシーン用
