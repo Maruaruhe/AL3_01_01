@@ -47,6 +47,9 @@ private: // メンバ変数
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 
+	uint32_t Character = 0;
+
+	Character* chara = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用

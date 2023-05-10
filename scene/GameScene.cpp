@@ -12,6 +12,8 @@ void GameScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+
+	Character = TextureManager::Load("NineFox.png");
 }
 
 void GameScene::Update() { 
