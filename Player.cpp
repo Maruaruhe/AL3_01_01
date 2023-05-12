@@ -49,7 +49,7 @@ void Player::Update() {
 	worldTransform_.matWorld_ = Multiply(scaleMatrix, Multiply(rotateXYZMatrix, translateMatrix));*/
 
 
-	ImGui::Begin("wa");
+	ImGui::Begin("space desu");
 
 	ImGui::SliderFloat3("Player", position, -30.0f, 30.0f);
 
