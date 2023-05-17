@@ -103,7 +103,7 @@ void Player::Attack() {
 		const float kBulletSpeed = 1.0f;
 		Vector3 velocity(0, 0, kBulletSpeed);
 		Bullet* newBullet = new Bullet();
-		newBullet->Initialize(model_, worldTransform_.translation_);
+		newBullet->Initialize(model_, worldTransform_.translation_,velocity);
 
 		bullets_.push_back(newBullet);
 	}
