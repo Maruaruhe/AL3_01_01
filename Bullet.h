@@ -5,6 +5,9 @@
 
 class Bullet {
 public:
+	//Bullet();
+	//~Bullet();
+
 	void Initialize(Model* model, const Vector3& position);
 
 	void Update();

@@ -1,6 +1,14 @@
 #include "Player.h"
 #include <ImGuiManager.h>
 
+
+Player::Player() {
+
+	}
+Player::~Player() {
+
+}
+
 void Player::Initialize(Model* model, uint32_t textureHandle) { 
 	model_ = Model::Create();
 	assert(model);
@@ -69,8 +77,8 @@ void Player::Update() {
 	worldTransform_.translation_.x = std::clamp(worldTransform_.translation_.x, -kMoveLimitX,kMoveLimitX);
 	worldTransform_.translation_.y = std::clamp(worldTransform_.translation_.y, -kMoveLimitY,kMoveLimitY);
 
-	worldTransform_.matWorld_ = MakeAffineMatrix(
-	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+	/*worldTransform_.matWorld_ = MakeAffineMatrix(
+	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);*/
 
 	 worldTransform_.UpdateMatrix();
 
@@ -83,7 +91,9 @@ void Player::Update() {
 
 void Player::Draw(ViewProjection viewProjection_) {
 	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
-	 bullet_->Draw(viewProjection_);
+	 if (bullet_) {
+		bullet_->Draw(viewProjection_);
+	 }
 }
 
 void Player::Attack() {
