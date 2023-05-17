@@ -15,6 +15,9 @@ void Bullet::Initialize(Model* model, const Vector3& position, const Vector3& ve
 void Bullet::Update() { 
 	worldTransform_.UpdateMatrix();
 	worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
+	if (--deathTimer <= 0) {
+		isDead_ = true;
+	}
 }
 
 void Bullet::Draw(const ViewProjection& viewProjection) {
