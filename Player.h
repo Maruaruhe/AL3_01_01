@@ -5,6 +5,7 @@
 #include <Input.h>
 #include "Matrix.h"
 #include "Bullet.h"
+#include <list>
 
 class Player {
 public:
@@ -25,7 +26,7 @@ private:
 	Model* model_ = nullptr;
 	Input* input_ = nullptr;
 
-	Bullet* bullet_ = nullptr;
+	std::list<Bullet*> bullets_;
 
 	uint32_t textureHandle_ = 0u;
 

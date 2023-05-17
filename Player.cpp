@@ -5,8 +5,10 @@
 Player::Player() {
 
 	}
-Player::~Player() {
-
+Player::~Player() { 
+	 for (Bullet* bullet : bullets_) {
+		delete bullet;
+	}
 }
 
 void Player::Initialize(Model* model, uint32_t textureHandle) { 
@@ -84,15 +86,15 @@ void Player::Update() {
 
 	 Attack();
 
-	 if (bullet_) {
-		bullet_->Update();
+	 for (Bullet* bullet : bullets_) {
+		bullet->Update();
 	 }
 }
 
 void Player::Draw(ViewProjection viewProjection_) {
 	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
-	 if (bullet_) {
-		bullet_->Draw(viewProjection_);
+	 for (Bullet* bullet : bullets_) {
+		bullet->Draw(viewProjection_);
 	 }
 }
 
@@ -101,6 +103,6 @@ void Player::Attack() {
 		Bullet* newBullet = new Bullet();
 		newBullet->Initialize(model_, worldTransform_.translation_);
 
-		bullet_ = newBullet;
+		bullets_.push_back(newBullet);
 	}
 }
