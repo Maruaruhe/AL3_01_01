@@ -22,6 +22,9 @@ private:
 	uint32_t textureHandle_ = 0u;
 
 	float inputFloat3[3] = {0, 0, 0};
+
 	const float kMoveLimitX = 34;
 	const float kMoveLimitY = 17;
+
+	const float kRotSpeed = 0.02f;
 };

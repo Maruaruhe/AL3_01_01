@@ -28,6 +28,14 @@ void Player::Update() {
 		move.y -= kCharacterSpeed;
 	}
 
+	
+	if (input_->PushKey(DIK_A)){
+		worldTransform_.rotation_.y -= kRotSpeed;
+	}
+	else if(input_->PushKey(DIK_D)){
+		worldTransform_.rotation_.y += kRotSpeed;
+	}
+
 	worldTransform_.translation_.x += move.x;
 	worldTransform_.translation_.y += move.y;
 	worldTransform_.translation_.z += move.z;
