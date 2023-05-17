@@ -1,5 +1,13 @@
 #include "Matrix.h"
 
+Vector3 Add(const Vector3& position, const Vector3& velocity) { 
+	Vector3 result;
+	result.x = position.x + velocity.x;
+	result.y = position.y + velocity.y;
+	result.z = position.z + velocity.z;
+	return result;
+}
+
 Matrix4x4 Add(const Matrix4x4& m1, const Matrix4x4& m2) {
 	return {m1.m[0][0] + m2.m[0][0], m1.m[0][1] + m2.m[0][1], m1.m[0][2] + m2.m[0][2],
 	        m1.m[0][3] + m2.m[0][3], m1.m[1][0] + m2.m[1][0], m1.m[1][1] + m2.m[1][1],

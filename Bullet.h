@@ -8,7 +8,7 @@ public:
 	//Bullet();
 	//~Bullet();
 
-	void Initialize(Model* model, const Vector3& position);
+	void Initialize(Model* model, const Vector3& position, const Vector3& velocity);
 
 	void Update();
 
@@ -18,4 +18,5 @@ private:
 	WorldTransform worldTransform_;
 	Model* model_;
 	uint32_t textureHandle_ = 0u;
+	Vector3 velocity_;
 };

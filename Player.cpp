@@ -100,6 +100,8 @@ void Player::Draw(ViewProjection viewProjection_) {
 
 void Player::Attack() {
 	if (input_->PushKey(DIK_SPACE)) {
+		const float kBulletSpeed = 1.0f;
+		Vector3 velocity(0, 0, kBulletSpeed);
 		Bullet* newBullet = new Bullet();
 		newBullet->Initialize(model_, worldTransform_.translation_);
 
