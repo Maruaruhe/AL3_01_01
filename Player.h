@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <Input.h>
 #include "Matrix.h"
+#include "Bullet.h"
 
 class Player {
 public:
@@ -13,11 +14,15 @@ public:
 
 	void Draw(ViewProjection viewProjection_);
 
+	void Attack();
+
 private:
 	WorldTransform worldTransform_;
 
 	Model* model_ = nullptr;
 	Input* input_ = nullptr;
+
+	Bullet* bullet_ = nullptr;
 
 	uint32_t textureHandle_ = 0u;
 

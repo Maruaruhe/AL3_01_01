@@ -72,9 +72,25 @@ void Player::Update() {
 	worldTransform_.matWorld_ = MakeAffineMatrix(
 	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
 
-	 worldTransform_.TransferMatrix();
+	 worldTransform_.UpdateMatrix();
+
+	 Attack();
+
+	 if (bullet_) {
+		bullet_->Update();
+	 }
 }
 
 void Player::Draw(ViewProjection viewProjection_) {
 	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
+	 bullet_->Draw(viewProjection_);
+}
+
+void Player::Attack() {
+	if (input_->PushKey(DIK_SPACE)) {
+		Bullet* newBullet = new Bullet();
+		newBullet->Initialize(model_, worldTransform_.translation_);
+
+		bullet_ = newBullet;
+	}
 }

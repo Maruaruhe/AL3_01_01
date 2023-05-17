@@ -1,6 +1,7 @@
 #pragma once
 #include "Model.h"
 #include "Vector3.h"
+#include <WorldTransform.h>
 
 class Bullet {
 public:
@@ -12,5 +13,6 @@ public:
 
 private:
 	WorldTransform worldTransform_;
-	Model* model;
+	Model* model_;
+	uint32_t textureHandle_ = 0u;
 };
