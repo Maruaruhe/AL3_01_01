@@ -10,10 +10,24 @@ void Enemy::Initialize(Model* model, const Vector3& position, const Vector3& vel
 	velocity_ = velocity;
 }
 void Enemy::Update() {
-	worldTransform_.UpdateMatrix();
-	worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
-	Vector3 velocity(0, 0, 1.0f);
-	velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+	switch (phase_) {
+	case Phase::Approach:
+	default:
+		worldTransform_.UpdateMatrix();
+		velocity_ = {0, 0, -0.5f};
+		velocity_ = TransformNormal(velocity_, worldTransform_.matWorld_);
+		worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
+		if (worldTransform_.translation_.z < -10.0f) {
+			phase_ = Phase::Leave;
+		}
+		break;
+	case Phase::Leave:
+		worldTransform_.UpdateMatrix();
+		velocity_ = {-0.25f, 0.25f, -0.25f};
+		velocity_ = TransformNormal(velocity_, worldTransform_.matWorld_);
+		worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
+		break;
+	}
 }
 void Enemy::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
