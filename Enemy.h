@@ -1,6 +1,8 @@
 #pragma once
 #include <Model.h>
 #include <WorldTransform.h>
+#include "EnemyBullet.h"
+#include <list>
 
 class Enemy;
 
@@ -33,6 +35,8 @@ public:
 	void ChangeState(BaseEnemyState* newState);
 	void move(const Vector3& velocity);
 
+	void Fire();
+
 	/*enum class Phase {
 	    Approach,
 	    Leave,
@@ -41,11 +45,18 @@ public:
 	Vector3 SetVelocity(const Vector3& velocity) { return velocity; }
 	WorldTransform GetTransform() { return worldTransform_; }
 
+
+	static const int kFireInterval = 60;
+
 private:
+	std::list<EnemyBullet*> bullets_;
+
 	WorldTransform worldTransform_;
 	Model* model_;
 	uint32_t textureHandle_ = 0u;
 	Vector3 velocity_;
 
 	BaseEnemyState* state;
+
+	int32_t fireTimer = 0;
 };

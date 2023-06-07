@@ -60,18 +60,6 @@ void Player::Update() {
 	    worldTransform_.translation_.x, worldTransform_.translation_.y,
 	    worldTransform_.translation_.z};
 
-	/*Matrix4x4 scaleMatrix = MakeScaleMatrix(worldTransform_.scale_);
-
-	Matrix4x4 rotateXMatrix = MakeRotateXMatrix(worldTransform_.rotation_.x);
-	Matrix4x4 rotateYMatrix = MakeRotateYMatrix(worldTransform_.rotation_.y);
-	Matrix4x4 rotateZMatrix = MakeRotateZMatrix(worldTransform_.rotation_.z);
-
-	Matrix4x4 rotateXYZMatrix = Multiply(rotateZMatrix, Multiply(rotateXMatrix, rotateYMatrix));
-
-	Matrix4x4 translateMatrix = MakeTranslateMatrix(worldTransform_.translation_);
-
-	worldTransform_.matWorld_ = Multiply(scaleMatrix, Multiply(rotateXYZMatrix, translateMatrix));*/
-
 
 	ImGui::Begin("space desu");
 

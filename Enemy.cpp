@@ -6,9 +6,12 @@ Enemy::Enemy() {
 	state = new EnemyStateApproach(); 
 }
 Enemy::~Enemy() { 
-	//delete state;
+	 for (EnemyBullet* bullet : bullets_) {
+		delete bullet;
+	}
 }
 void Enemy::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
+	model_ = Model::Create();
 	assert(model);
 	textureHandle_ = TextureManager::Load("Angel.png");
 	model_ = model;
@@ -17,34 +20,52 @@ void Enemy::Initialize(Model* model, const Vector3& position, const Vector3& vel
 	velocity_ = velocity;
 }
 void Enemy::Update() {
+	bullets_.remove_if([](EnemyBullet* bullet) {
+		if (bullet->isDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
 	state->Update(this);
 	worldTransform_.UpdateMatrix();
 	worldTransform_.TransferMatrix();
-	/*velocity_ = TransformNormal(velocity_, worldTransform_.matWorld_);*/
+	if (fireTimer <= 0) {
+		Fire();
+		fireTimer = kFireInterval;
+	}
+	--fireTimer;
+
+	for (EnemyBullet* bullet : bullets_) {
+		bullet->Update();
+	}
+
 }
 void Enemy::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	for (EnemyBullet* bullet : bullets_) {
+		bullet->Draw(viewProjection);
+	}
 }
 void Enemy::move(const Vector3& velocity) {
 	worldTransform_.translation_ = Add(worldTransform_.translation_, velocity);
 }
-//void Enemy::Approach() { 
-//	move({0.0f, 0.0f, -0.5f});
-//	if (worldTransform_.translation_.z < -10.0f) {
-//		ChangeState(new EnemyStateLeave());
-//	}
-//}
-//void Enemy::Leave() { 
-//	move({-0.25f, 0.25f, 0.0f});
-//}
+
+void Enemy::Fire() {
+	const float kBulletSpeed = -2.0f;
+	Vector3 velocity(0, 0, kBulletSpeed);
+	velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+	EnemyBullet* newBullet = new EnemyBullet();
+	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
+
+	bullets_.push_back(newBullet);
+}
+
 void Enemy::ChangeState(BaseEnemyState* newState) { 
 	delete state;
 	state=newState;
 }
 
-//void BaseEnemyState::Update(Enemy* enemy) {
-//
-//}
 void EnemyStateApproach::Update(Enemy* enemy) {
 	const Vector3 velocity = {0.0f, 0.0f, -0.5f};
 	enemy->move(velocity);
@@ -56,7 +77,3 @@ void EnemyStateLeave::Update(Enemy* enemy) {
 	const Vector3 velocity = {-0.25f, 0.25f, -0.25f};
 	enemy->move(velocity);
 }
-//void (Enemy::*Enemy::spFuncTable[])() = {
-//	&Enemy::Approach,
-//	&Enemy::Leave
-//};
