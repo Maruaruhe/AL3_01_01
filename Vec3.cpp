@@ -35,12 +35,29 @@ Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix) {
 	return result;
 }
 
+Vector3 TransformNormal(const Vector3& velocity, const Matrix4x4& matrix) {
+	Vector3 result{
+	    velocity.x * matrix.m[0][0] + velocity.y * matrix.m[1][0] + velocity.z * matrix.m[2][0],
+	    velocity.x * matrix.m[0][1] + velocity.y * matrix.m[1][1] + velocity.z * matrix.m[2][1],
+	    velocity.x * matrix.m[0][2] + velocity.y * matrix.m[1][2] + velocity.z * matrix.m[2][2]};
+	return result;
+}
+
 Vector3 Cross(const Vector3& vector1, const Vector3& vector2) {
 	Vector3 result;
 	result.x = vector1.y * vector2.z - vector1.z * vector2.y;
 	result.y = vector1.z * vector2.x - vector1.x * vector2.z;
 	result.z = vector1.x * vector2.y - vector1.y * vector2.x;
 	return result;
+}
+
+Vector3 Normalize(const Vector3& v) {
+	Vector3 num = {v.x / Length(v), v.y / Length(v), v.z / Length(v)};
+	return num;
+}
+float Length(const Vector3& v) {
+	float num = {sqrtf(v.x * v.x + v.y * v.y + v.z * v.z)};
+	return num;
 }
 
 Vector3 Normalize(const Vector3& v) {
