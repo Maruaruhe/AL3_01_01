@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <Input.h>
 #include "Matrix.h"
+#include "Vec3.h"
 #include "Bullet.h"
 #include <list>
 

@@ -1,5 +1,6 @@
 #include "Bullet.h"
 #include "Matrix.h"
+#include "Vec3.h"
 #include <assert.h>
 
 

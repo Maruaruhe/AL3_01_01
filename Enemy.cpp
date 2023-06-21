@@ -63,7 +63,7 @@ void Enemy::move(const Vector3& velocity) {
 void Enemy::Fire() {
 	const float kBulletSpeed = -2.0f;
 	Vector3 velocity(0, 0, kBulletSpeed);
-	velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+	velocity = Transform(velocity, worldTransform_.matWorld_);
 	EnemyBullet* newBullet = new EnemyBullet();
 	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
 
