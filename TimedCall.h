@@ -4,15 +4,16 @@
 class TimedCall {
 public:
 
-	TimedCall();
+	TimedCall(std::function<void(void)> f,uint32_t time);
 
 	void Update();
 
-	bool IsFinished() { return isFinish; }
+	bool IsFinished() { return isFinish_; }
 
 private:
+	std::function<void(void)> f_;
 
-	uint32_t time;
+	uint32_t time_;
 
-	bool isFinish = false;
+	bool isFinish_ = false;
 };

@@ -2,6 +2,7 @@
 #include <Model.h>
 #include <WorldTransform.h>
 #include "EnemyBullet.h"
+#include "TimedCall.h"
 #include <list>
 
 class Enemy;
@@ -30,26 +31,21 @@ public:
 	void Update();
 	void Draw(const ViewProjection& viewProjection);
 
-	/*void Approach();
-	void Leave();*/
 	void ChangeState(BaseEnemyState* newState);
 	void move(const Vector3& velocity);
 
 	void Fire();
-
-	/*enum class Phase {
-	    Approach,
-	    Leave,
-	};*/
 	Vector3 SetPosition(const Vector3& position) { return position; }
 	Vector3 SetVelocity(const Vector3& velocity) { return velocity; }
 	WorldTransform GetTransform() { return worldTransform_; }
 
+	void ResetTime();
 
 	static const int kFireInterval = 60;
 
 private:
 	std::list<EnemyBullet*> bullets_;
+	std::list<TimedCall*> timedCalls_;
 
 	WorldTransform worldTransform_;
 	Model* model_;

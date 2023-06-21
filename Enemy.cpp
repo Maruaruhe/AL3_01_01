@@ -18,6 +18,7 @@ void Enemy::Initialize(Model* model, const Vector3& position, const Vector3& vel
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 	velocity_ = velocity;
+	ResetTime();
 }
 void Enemy::Update() {
 	bullets_.remove_if([](EnemyBullet* bullet) {
@@ -27,14 +28,22 @@ void Enemy::Update() {
 		}
 		return false;
 	});
+
+	timedCalls_.remove_if([](TimedCall* timedCall) {
+		if (timedCall->IsFinished()) {
+			delete timedCall;
+			return true;
+		}
+		return false;
+	});
+
 	state->Update(this);
 	worldTransform_.UpdateMatrix();
 	worldTransform_.TransferMatrix();
-	if (fireTimer <= 0) {
-		Fire();
-		fireTimer = kFireInterval;
+
+	for (TimedCall* timedCall : timedCalls_) {
+		timedCall->Update();
 	}
-	--fireTimer;
 
 	for (EnemyBullet* bullet : bullets_) {
 		bullet->Update();
@@ -59,6 +68,16 @@ void Enemy::Fire() {
 	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
 
 	bullets_.push_back(newBullet);
+}
+
+void Enemy::ResetTime() { 
+
+	Fire();
+
+	std::function<void(void)> callback = std::bind(&Enemy::ResetTime, this);
+	TimedCall* timedCall = new TimedCall(callback, 30);
+	timedCalls_.push_back(timedCall);
+
 }
 
 void Enemy::ChangeState(BaseEnemyState* newState) { 

@@ -1,17 +1,18 @@
 #include "TimedCall.h"
-TimedCall::TimedCall() {
-
+TimedCall::TimedCall(std::function<void(void)> f, uint32_t time) { 
+	f_ = f;
+	time_ = time;
 }
 
 void TimedCall::Update() {
 
-	if (isFinish) {
+	if (isFinish_) {
 		return;
 	}
-	time--;
-	if (time <= 0) {
-		isFinish = true;
+	time_--;
+	if (time_ <= 0) {
+		isFinish_ = true;
 		//callBack
-
+		f_();
 	}
 }
