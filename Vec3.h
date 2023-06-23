@@ -19,3 +19,7 @@ float Length(const Vector3& v);
 Vector3 Normalize(const Vector3& v);
 
 float Length(const Vector3& v);
+
+float dotXY(Vector3 v1, Vector3 v2);
+float dotXZ(Vector3 v1, Vector3 v2);
+float dotYZ(Vector3 v1, Vector3 v2);

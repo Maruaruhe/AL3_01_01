@@ -1,5 +1,4 @@
 #include "Vec3.h"
-
 #include <assert.h>
 
 Vector3 Add(Vector3 v1, Vector3 v2) {
@@ -55,7 +54,33 @@ Vector3 Normalize(const Vector3& v) {
 	Vector3 num = {v.x / Length(v), v.y / Length(v), v.z / Length(v)};
 	return num;
 }
+
 float Length(const Vector3& v) {
 	float num = {sqrtf(v.x * v.x + v.y * v.y + v.z * v.z)};
 	return num;
+}
+
+float dotXY(Vector3 v1, Vector3 v2) { 
+	float result;
+	Vector3 distance = {};
+	distance.x = v1.x - v2.x;
+	distance.y = v1.y - v2.y;
+	result = sqrt(pow(distance.x, 2) + pow(distance.y, 2));
+	return result;
+}
+float dotXZ(Vector3 v1, Vector3 v2) { 
+	float result;
+	Vector3 distance = {};
+	distance.x = v1.x - v2.x;
+	distance.z = v1.z - v2.z;
+	result = sqrt(pow(distance.x, 2) + pow(distance.z, 2));
+	return result;
+}
+float dotYZ(Vector3 v1, Vector3 v2) { 
+	float result;
+	Vector3 distance = {};
+	distance.y = v1.y - v2.y;
+	distance.z = v1.z - v2.z;
+	result = sqrt(pow(distance.y, 2) + pow(distance.z, 2));
+	return result;
 }
