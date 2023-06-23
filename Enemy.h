@@ -5,6 +5,8 @@
 #include "TimedCall.h"
 #include <list>
 
+class Player;
+
 class Enemy;
 
 class BaseEnemyState {
@@ -41,6 +43,10 @@ public:
 
 	void ResetTime();
 
+	Vector3 GetWorldPosition();
+
+	void SetPlayer(Player* player) { player_ = player; }
+
 	static const int kFireInterval = 60;
 
 private:
@@ -55,4 +61,6 @@ private:
 	BaseEnemyState* state;
 
 	int32_t fireTimer = 0;
+
+	Player* player_ = nullptr;
 };

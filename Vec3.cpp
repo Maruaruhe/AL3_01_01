@@ -59,12 +59,3 @@ float Length(const Vector3& v) {
 	float num = {sqrtf(v.x * v.x + v.y * v.y + v.z * v.z)};
 	return num;
 }
-
-Vector3 Normalize(const Vector3& v) {
-	Vector3 num = {v.x / Length(v), v.y / Length(v), v.z / Length(v)};
-	return num;
-}
-float Length(const Vector3& v) {
-	float num = {sqrtf(v.x * v.x + v.y * v.y + v.z * v.z)};
-	return num;
-}

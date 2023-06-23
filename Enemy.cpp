@@ -1,6 +1,9 @@
 #include "Enemy.h"
 #include <assert.h>
 #include "Matrix.h"
+#include "Vec3.h"
+#include "Player.h"
+#include <assert.h>
 
 Enemy::Enemy() { 
 	state = new EnemyStateApproach(); 
@@ -61,9 +64,20 @@ void Enemy::move(const Vector3& velocity) {
 }
 
 void Enemy::Fire() {
-	const float kBulletSpeed = -2.0f;
-	Vector3 velocity(0, 0, kBulletSpeed);
-	velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+	assert(player_);
+	const float kBulletSpeed = 1.0f;
+
+
+	/*Vector3 velocity(0, 0, kBulletSpeed);
+	velocity = TransformNormal(velocity, worldTransform_.matWorld_);*/
+	
+	Vector3 distance = Subtract(GetWorldPosition(),player_->GetWorldPosition());
+	Vector3 normalize = Normalize(distance);
+	Vector3 velocity = {};
+	velocity.x = -normalize.x;
+	velocity.y = -normalize.y;
+	velocity.z = -normalize.z;
+
 	EnemyBullet* newBullet = new EnemyBullet();
 	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
 
@@ -95,4 +109,14 @@ void EnemyStateApproach::Update(Enemy* enemy) {
 void EnemyStateLeave::Update(Enemy* enemy) {
 	const Vector3 velocity = {-0.25f, 0.25f, -0.25f};
 	enemy->move(velocity);
+}
+
+Vector3 Enemy::GetWorldPosition() {
+	Vector3 worldPosition;
+
+	worldPosition.x = worldTransform_.matWorld_.m[3][0];
+	worldPosition.y = worldTransform_.matWorld_.m[3][1];
+	worldPosition.z = worldTransform_.matWorld_.m[3][2];
+
+	return worldPosition;
 }

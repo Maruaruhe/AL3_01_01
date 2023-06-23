@@ -4,7 +4,7 @@
 
 Player::Player() {
 
-	}
+}
 Player::~Player() { 
 	 for (Bullet* bullet : bullets_) {
 		delete bullet;
@@ -103,3 +103,13 @@ void Player::Attack() {
 		bullets_.push_back(newBullet);
 	}
 }
+
+Vector3 Player::GetWorldPosition() { 
+	Vector3 worldPosition;
+
+	worldPosition.x = worldTransform_.matWorld_.m[3][0];
+	worldPosition.y = worldTransform_.matWorld_.m[3][1];
+	worldPosition.z = worldTransform_.matWorld_.m[3][2];
+
+	return worldPosition;
+	}
