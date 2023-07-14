@@ -16,6 +16,10 @@ public:
 
 	bool isDead() const { return isDead_; }
 
+	Vector3 GetWorldPosition();
+
+	void OnCollision();
+
 private:
 	WorldTransform worldTransform_;
 	Model* model_;

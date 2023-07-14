@@ -49,6 +49,10 @@ public:
 
 	static const int kFireInterval = 60;
 
+	void OnCollision();
+
+	const std::list<EnemyBullet*>& GetBullets() const { return bullets_; }
+
 private:
 	std::list<EnemyBullet*> bullets_;
 	std::list<TimedCall*> timedCalls_;

@@ -43,7 +43,11 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-	
+/// <summary>
+/// 衝突判定と応答
+/// </summary>
+	void CheckAllCollision();
+
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -51,6 +55,7 @@ private: // メンバ変数
 	Audio* audio_ = nullptr;
 	Sprite* sprite_ = nullptr;
 	Model* model_ = nullptr;
+
 	Player* player_ = nullptr;
 	Enemy* enemy_ = nullptr;
 

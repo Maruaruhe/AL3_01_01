@@ -28,7 +28,7 @@ void GameScene::Initialize() {
 	enemy_ = new Enemy();
 	player_->Initialize(model_,character);
 	enemy_->SetPlayer(player_);
-	enemy_->Initialize(model_, {0,3,50}, {0.0f, 0.0f, -0.5f});
+	enemy_->Initialize(model_, {0,3,50}, {0.0f, 0.0f, -0.05f});
 	debugCamera_ = new DebugCamera(100, 50);
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
@@ -37,6 +37,7 @@ void GameScene::Initialize() {
 void GameScene::Update() { 
 	player_->Update();
 	enemy_->Update();
+	CheckAllCollision();
 	debugCamera_->Update();
 	#ifdef _DEBUG
 	if (input_->TriggerKey(DIK_R)) {
@@ -103,4 +104,55 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::CheckAllCollision() { 
+	Vector3 posA, posB;
+
+	const std::list<Bullet*>& playerBullets_ = player_->GetBullets();
+	const std::list<EnemyBullet*>& enemyBullets_ = enemy_->GetBullets();
+
+	#pragma region 自キャラと敵弾の当たり判定
+	posA = player_->GetWorldPosition();
+
+	for (EnemyBullet* bullet : enemyBullets_) {
+		posB = bullet->GetWorldPosition();
+
+		Vector3 distance = Subtract(posA, posB);
+		if (std::pow(distance.x, 2) + std::pow(distance.y, 2) + std::pow(distance.z, 2) <=3 * 3) {
+			player_->OnCollision();
+			bullet->OnCollision();
+		}
+	}
+	#pragma endregion
+
+	#pragma region 自弾と敵キャラの当たり判定
+	posA = enemy_->GetWorldPosition();
+
+	for (Bullet* bullet : playerBullets_) {
+		posB = bullet->GetWorldPosition();
+
+		Vector3 distance = Subtract(posA, posB);
+		if (std::pow(distance.x, 2) + std::pow(distance.y, 2) + std::pow(distance.z, 2) <= 3 * 3) {
+			enemy_->OnCollision();
+			bullet->OnCollision();
+		}
+	}
+	#pragma endregion
+
+	#pragma region 自弾と敵弾の当たり判定
+	for (Bullet* playerBullet : playerBullets_) {
+		for (EnemyBullet* enemyBullet : enemyBullets_) {
+			posA = playerBullet->GetWorldPosition();
+			posB = enemyBullet->GetWorldPosition();
+
+			Vector3 distance = Subtract(posA, posB);
+			if (std::pow(distance.x, 2) + std::pow(distance.y, 2) + std::pow(distance.z, 2) <=
+			    3 * 3) {
+				playerBullet->OnCollision();
+				enemyBullet->OnCollision();
+			}
+		}
+	}
+	#pragma endregion
 }
