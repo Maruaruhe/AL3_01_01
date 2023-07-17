@@ -9,10 +9,11 @@ GameScene::GameScene() {
 GameScene::~GameScene() { 
 	delete sprite_;
 	delete model_;
-	delete modelSkydome_;
+
 	delete player_;
 	delete enemy_;
 	delete skydome_;
+	delete modelSkydome_;
 	delete debugCamera_;
 }
 
@@ -26,11 +27,12 @@ void GameScene::Initialize() {
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
 	model_ = Model::Create();
-	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 
 	player_ = new Player();
 	enemy_ = new Enemy();
 	skydome_ = new Skydome();
+
+	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 
 	player_->Initialize(model_,character);
 	enemy_->SetPlayer(player_);
