@@ -9,13 +9,15 @@
 
 class Skydome {
 public:
-	void Initialize(Model* model);
+	void Initialize(Model* model/*, const Vector3& position*/);
 
 	void Update();
 
 	void Draw(ViewProjection viewProjection_);
 
 private:
+	//uint32_t textureHandle_ = 0u;
+
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
 };
