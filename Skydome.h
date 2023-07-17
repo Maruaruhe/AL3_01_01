@@ -9,7 +9,7 @@
 
 class Skydome {
 public:
-	void Initialize(Model* model/*, const Vector3& position*/);
+	void Initialize(Model* model);
 
 	void Update();
 

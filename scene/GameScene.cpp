@@ -7,14 +7,15 @@ GameScene::GameScene() {
 }
 
 GameScene::~GameScene() { 
-	delete sprite_;
+	//delete sprite_;
 	delete model_;
 
 	delete player_;
+	delete debugCamera_;
 	delete enemy_;
+
 	delete skydome_;
 	delete modelSkydome_;
-	delete debugCamera_;
 }
 
 void GameScene::Initialize() {
@@ -23,31 +24,33 @@ void GameScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
-	sprite_ = Sprite::Create(character, {100, 50});
+	//sprite_ = Sprite::Create(character, {100, 50});
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
+
 	model_ = Model::Create();
-
-	player_ = new Player();
-	enemy_ = new Enemy();
-	skydome_ = new Skydome();
-
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 
-	player_->Initialize(model_,character);
-	enemy_->SetPlayer(player_);
-	enemy_->Initialize(model_, {0,3,50}, {0.0f, 0.0f, -0.05f});
-	skydome_->Initialize(modelSkydome_/*, {0, 0, 0}*/);
+	player_ = new Player();
+	player_->Initialize(model_, character);
+
 	debugCamera_ = new DebugCamera(100, 50);
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+
+	enemy_ = new Enemy();
+	enemy_->SetPlayer(player_);
+	enemy_->Initialize(model_, {0, 3, 50}, {0.0f, 0.0f, -0.05f});
+
+	skydome_ = new Skydome();
+	skydome_->Initialize(modelSkydome_);
 }
 
 void GameScene::Update() { 
 	player_->Update();
 	enemy_->Update();
-	skydome_->Update();
 	CheckAllCollision();
+	skydome_->Update();
 	debugCamera_->Update();
 	#ifdef _DEBUG
 	if (input_->TriggerKey(DIK_R)) {
@@ -95,9 +98,9 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	//model_->Draw(worldTransform_, viewProjection_, character);
-	enemy_->Draw(viewProjection_);
-	player_->Draw(viewProjection_);
 	skydome_->Draw(viewProjection_);
+	player_->Draw(viewProjection_);
+	enemy_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
