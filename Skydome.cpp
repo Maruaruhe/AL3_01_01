@@ -1,10 +1,6 @@
 #include "Skydome.h"
-#include <assert.h>
 
 void Skydome::Initialize(Model* model) {
-
-	model_ = Model::Create();
-	assert(model);
 
 	model_ = model;
 

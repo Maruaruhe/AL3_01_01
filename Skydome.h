@@ -1,11 +1,6 @@
 #pragma once
 #include <Model.h>
-#include <TextureManager.h>
-#include <assert.h>
-#include <Input.h>
-#include "Matrix.h"
-#include "Vec3.h"
-#include <list>
+#include <WorldTransform.h>
 
 class Skydome {
 public:
