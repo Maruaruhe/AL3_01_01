@@ -27,7 +27,7 @@ void GameScene::Initialize() {
 	//sprite_ = Sprite::Create(character, {100, 50});
 	worldTransform_.Initialize();
 
-	viewProjection_.farZ = 100;
+	viewProjection_.farZ = 1000;
 	viewProjection_.Initialize();
 
 	model_ = Model::Create();
