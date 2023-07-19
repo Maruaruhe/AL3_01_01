@@ -28,7 +28,7 @@ void GameScene::Initialize() {
 	//sprite_ = Sprite::Create(character, {100, 50});
 	worldTransform_.Initialize();
 
-	viewProjection_.farZ = 100;
+	viewProjection_.farZ = 1000;
 	viewProjection_.Initialize();
 
 	model_ = Model::Create();
@@ -47,6 +47,9 @@ void GameScene::Initialize() {
 
 	skydome_ = new Skydome();
 	skydome_->Initialize(modelSkydome_);
+
+	railCamera_ = new RailCamera();
+	railCamera_->Initialize(worldTransform_);
 }
 
 void GameScene::Update() { 
@@ -54,6 +57,13 @@ void GameScene::Update() {
 	enemy_->Update();
 	CheckAllCollision();
 	skydome_->Update();
+	railCamera_->Update();
+
+	viewProjection_.matView = railCamera_->GetViewProjection().matView;
+	viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+
+	viewProjection_.TransferMatrix();
+
 	debugCamera_->Update();
 	#ifdef _DEBUG
 	if (input_->TriggerKey(DIK_R)) {
