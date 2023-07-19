@@ -16,6 +16,7 @@ GameScene::~GameScene() {
 
 	delete skydome_;
 	delete modelSkydome_;
+	delete railCamera_;
 }
 
 void GameScene::Initialize() {
