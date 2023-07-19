@@ -26,6 +26,8 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 	//sprite_ = Sprite::Create(character, {100, 50});
 	worldTransform_.Initialize();
+
+	viewProjection_.farZ = 100;
 	viewProjection_.Initialize();
 
 	model_ = Model::Create();
