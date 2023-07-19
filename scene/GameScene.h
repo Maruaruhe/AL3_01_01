@@ -59,9 +59,8 @@ private: // メンバ変数
 
 	Player* player_ = nullptr;
 	Enemy* enemy_ = nullptr;
-	Skydome* skydome_ = nullptr;
-
 	Model* modelSkydome_ = nullptr;
+	Skydome* skydome_ = nullptr;
 
 	WorldTransform worldTransform_;
 	ViewProjection viewProjection_;
