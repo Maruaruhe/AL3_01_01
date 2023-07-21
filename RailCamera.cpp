@@ -12,7 +12,7 @@ void RailCamera::Update() {
 	//移動　回転
 	worldTransform_.translation_.z -= 5;
 	//ワールド行列再計算
-	worldTransform_.UpdateMatrix();
+	/*worldTransform_.UpdateMatrix();*/
 	//
 	viewProjection_.matView = Inverse(worldTransform_.matWorld_);
 

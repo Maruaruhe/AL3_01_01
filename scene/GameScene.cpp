@@ -59,10 +59,12 @@ void GameScene::Update() {
 	skydome_->Update();
 	railCamera_->Update();
 
+	viewProjection_ = railCamera_->GetViewProjection();
 	viewProjection_.matView = railCamera_->GetViewProjection().matView;
 	viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
 
 	viewProjection_.TransferMatrix();
+	viewProjection_.UpdateMatrix();
 
 	debugCamera_->Update();
 	#ifdef _DEBUG
