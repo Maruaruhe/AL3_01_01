@@ -7,11 +7,12 @@
 
 class RailCamera {
 public:
-	void Initialize(WorldTransform wt);
+	//void Initialize(WorldTransform wt);
+	void Initialize(Vector3 translation,Vector3 rotation);
 
 	void Update();
 
-	ViewProjection GetViewProjection() { return viewProjection_; }
+	const ViewProjection& GetViewProjection() { return viewProjection_; }
 
 	private:
 	WorldTransform worldTransform_;
