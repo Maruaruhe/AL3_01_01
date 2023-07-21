@@ -13,7 +13,7 @@ public:
 	Player();
 	~Player();
 
-	void Initialize(Model* model, uint32_t textureHandle);
+	void Initialize(Model* model, uint32_t textureHandle,Vector3 playerPosition);
 
 	void Update();
 
@@ -26,6 +26,8 @@ public:
 	void OnCollision();
 
 	const std::list<Bullet*>& GetBullets() const { return bullets_; }
+
+	void SetParent(const WorldTransform* parent);
 
 private:
 	WorldTransform worldTransform_;

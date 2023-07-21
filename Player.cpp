@@ -11,7 +11,7 @@ Player::~Player() {
 	}
 }
 
-void Player::Initialize(Model* model, uint32_t textureHandle) { 
+void Player::Initialize(Model* model, uint32_t textureHandle, Vector3 playerPosition){ 
 	model_ = Model::Create();
 	assert(model);
 
@@ -19,7 +19,10 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	textureHandle_ = textureHandle;
 	input_ = Input::GetInstance();
 
+
+
 	worldTransform_.Initialize();
+	worldTransform_.translation_= Add(worldTransform_.rotation_, playerPosition);
 }
 
 void Player::Update() { 
@@ -98,7 +101,8 @@ void Player::Attack() {
 		Vector3 velocity(0, 0, kBulletSpeed);
 		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 		Bullet* newBullet = new Bullet();
-		newBullet->Initialize(model_, worldTransform_.translation_,velocity);
+		//newBullet->Initialize(model_, worldTransform_.translation_,velocity);
+		newBullet->Initialize(model_, GetWorldPosition(), velocity);
 
 		bullets_.push_back(newBullet);
 	}
@@ -117,3 +121,7 @@ Vector3 Player::GetWorldPosition() {
 void Player::OnCollision() {
 
 }
+
+void Player::SetParent(const WorldTransform* parent) { 
+	worldTransform_.parent_ = parent;
+	}

@@ -9,7 +9,7 @@ void RailCamera::Initialize(Vector3 translation, Vector3 rotation) {
 	
 void RailCamera::Update() {
 	//移動　回転
-	worldTransform_.translation_.z += 0.1;
+	worldTransform_.translation_.z -= 0.05f;
 	//ワールド行列再計算
 	worldTransform_.matWorld_ = MakeAffineMatrix(
 	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);

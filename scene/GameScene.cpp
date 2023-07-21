@@ -35,7 +35,7 @@ void GameScene::Initialize() {
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 
 	player_ = new Player();
-	player_->Initialize(model_, character);
+	player_->Initialize(model_, character, {0,0,30});
 
 	debugCamera_ = new DebugCamera(100, 50);
 	AxisIndicator::GetInstance()->SetVisible(true);
@@ -49,7 +49,9 @@ void GameScene::Initialize() {
 	skydome_->Initialize(modelSkydome_);
 
 	railCamera_ = new RailCamera();
-	railCamera_->Initialize({0, 0, -50}, {0, 0, 0});
+	railCamera_->Initialize({0, 0, 0}, {0, 0, 0});
+
+	player_->SetParent(&railCamera_->GetWorldTransform());
 }
 
 void GameScene::Update() { 
