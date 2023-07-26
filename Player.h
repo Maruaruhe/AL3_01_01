@@ -32,6 +32,8 @@ public:
 private:
 	WorldTransform worldTransform_;
 
+	WorldTransform worldTransform3DReticle_;
+
 	Model* model_ = nullptr;
 	Input* input_ = nullptr;
 

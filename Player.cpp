@@ -23,6 +23,7 @@ void Player::Initialize(Model* model, uint32_t textureHandle, Vector3 playerPosi
 
 	worldTransform_.Initialize();
 	worldTransform_.translation_= Add(worldTransform_.rotation_, playerPosition);
+	worldTransform3DReticle_.Initialize();
 }
 
 void Player::Update() { 
@@ -80,6 +81,11 @@ void Player::Update() {
 	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);*/
 
 	 worldTransform_.UpdateMatrix();
+
+	 const float kDistancePlayerTo3DReticle = 50.0f;
+
+	 Vector3 offset = {0, 0, 1.0f};
+	 
 
 	 Attack();
 
