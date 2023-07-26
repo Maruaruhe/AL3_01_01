@@ -13,7 +13,7 @@ public:
 	Player();
 	~Player();
 
-	void Initialize(Model* model, uint32_t textureHandle,Vector3 playerPosition);
+	void Initialize(Model* model, Model* reticleModel, uint32_t textureHandle, Vector3 playerPosition);
 
 	void Update();
 
@@ -35,6 +35,7 @@ private:
 	WorldTransform worldTransform3DReticle_;
 
 	Model* model_ = nullptr;
+	Model* reticleModel_ = nullptr;
 	Input* input_ = nullptr;
 
 	std::list<Bullet*> bullets_;

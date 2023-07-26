@@ -43,6 +43,14 @@ Vector3 TransformNormal(const Vector3& velocity, const Matrix4x4& matrix) {
 	return result;
 }
 
+Vector3 MultiplyVectorMatrix(const Vector3& velocity, const Matrix4x4& matrix) {
+	Vector3 result{
+	    velocity.x * matrix.m[0][0] + velocity.y * matrix.m[0][1] + velocity.z * matrix.m[0][2],
+	    velocity.x * matrix.m[1][0] + velocity.y * matrix.m[1][1] + velocity.z * matrix.m[2][2],
+	    velocity.x * matrix.m[2][0] + velocity.y * matrix.m[2][1] + velocity.z * matrix.m[2][2]};
+	return result;
+}
+
 Vector3 Cross(const Vector3& vector1, const Vector3& vector2) {
 	Vector3 result;
 	result.x = vector1.y * vector2.z - vector1.z * vector2.y;

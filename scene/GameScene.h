@@ -72,6 +72,7 @@ private: // メンバ変数
 	Audio* audio_ = nullptr;
 	//Sprite* sprite_ = nullptr;
 	Model* model_ = nullptr;
+	Model* reticle_ = nullptr;
 
 	Player* player_ = nullptr;
 	//Enemy* enemy_ = nullptr;

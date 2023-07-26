@@ -39,10 +39,11 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 
 	model_ = Model::Create();
+	reticle_ = Model::Create();
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 
 	player_ = new Player();
-	player_->Initialize(model_, character, {0,0,30});
+	player_->Initialize(model_, reticle_, character,{0,0,30});
 
 	debugCamera_ = new DebugCamera(100, 50);
 	AxisIndicator::GetInstance()->SetVisible(true);
@@ -145,7 +146,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	//model_->Draw(worldTransform_, viewProjection_, character);
-	skydome_->Draw(viewProjection_);
+	//skydome_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 	//enemy_->Draw(viewProjection_);
 	for (Enemy* enemy : enemies_) {

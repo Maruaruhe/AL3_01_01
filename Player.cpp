@@ -11,11 +11,15 @@ Player::~Player() {
 	}
 }
 
-void Player::Initialize(Model* model, uint32_t textureHandle, Vector3 playerPosition){ 
+void Player::Initialize(Model* model, Model* reticleModel, uint32_t textureHandle, Vector3 playerPosition) { 
 	model_ = Model::Create();
 	assert(model);
 
+	reticleModel_ = Model::Create();
+	assert(reticleModel_);
+
 	model_ = model;
+	reticleModel_ = reticleModel;
 	textureHandle_ = textureHandle;
 	input_ = Input::GetInstance();
 
@@ -86,6 +90,18 @@ void Player::Update() {
 
 	 Vector3 offset = {0, 0, 1.0f};
 	 
+	 offset = TransformNormal(offset, worldTransform_.matWorld_);
+	 //offset = MultiplyVectorMatrix(offset, worldTransform_.matWorld_);
+	 offset.x = Normalize(offset).x * kDistancePlayerTo3DReticle;
+	 offset.y = Normalize(offset).y * kDistancePlayerTo3DReticle;
+	 offset.z = Normalize(offset).z * kDistancePlayerTo3DReticle;
+
+	 worldTransform3DReticle_.translation_.x = offset.x + worldTransform_.translation_.x;
+	 worldTransform3DReticle_.translation_.y = offset.y + worldTransform_.translation_.y;
+	 worldTransform3DReticle_.translation_.z = offset.z + worldTransform_.translation_.z;
+
+	 worldTransform3DReticle_.UpdateMatrix();
+	 worldTransform3DReticle_.TransferMatrix();
 
 	 Attack();
 
@@ -96,6 +112,7 @@ void Player::Update() {
 
 void Player::Draw(ViewProjection viewProjection_) {
 	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
+	 reticleModel_->Draw(worldTransform3DReticle_, viewProjection_, textureHandle_);
 	 for (Bullet* bullet : bullets_) {
 		bullet->Draw(viewProjection_);
 	 }
