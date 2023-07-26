@@ -13,6 +13,7 @@
 #include "Skydome.h"
 #include"DebugCamera.h"
 #include "RailCamera.h"
+#include <sstream>
 
 /// <summary>
 /// ゲームシーン
@@ -60,6 +61,10 @@ public: // メンバ関数
 	void Fire();
 	void ResetTime();
 
+	void LoadEnemyPopDate();
+	void UpdateEnemyPopCommands();
+
+	void spawnEnemy(Vector3 pos);
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -69,7 +74,10 @@ private: // メンバ変数
 	Model* model_ = nullptr;
 
 	Player* player_ = nullptr;
-	Enemy* enemy_ = nullptr;
+	//Enemy* enemy_ = nullptr;
+
+	std::list<Enemy*> enemies_;
+
 	Model* modelSkydome_ = nullptr;
 	Skydome* skydome_ = nullptr;
 
@@ -86,6 +94,8 @@ private: // メンバ変数
 
 	std::list<EnemyBullet*> enemyBullets_;
 	std::list<TimedCall*> timedCalls_;
+
+	std::stringstream enemyPopCommands;
 
 	/// <summary>
 	/// ゲームシーン用

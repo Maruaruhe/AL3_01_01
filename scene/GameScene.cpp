@@ -2,6 +2,7 @@
 #include "TextureManager.h"
 #include <cassert>
 #include "AxisIndicator.h"
+#include <fstream>
 
 GameScene::GameScene() {
 }
@@ -12,8 +13,10 @@ GameScene::~GameScene() {
 
 	delete player_;
 	delete debugCamera_;
-	delete enemy_;
-
+	//delete enemy_;
+	for (Enemy* enemy : enemies_) {
+		delete enemy;
+	}
 	for (EnemyBullet* bullet : enemyBullets_) {
 		delete bullet;
 	}
@@ -44,11 +47,7 @@ void GameScene::Initialize() {
 	debugCamera_ = new DebugCamera(100, 50);
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
-
-	enemy_ = new Enemy();
-	enemy_->SetPlayer(player_);
-	enemy_->Initialize(model_, {0, 3, 50}, {0.0f, 0.0f, -0.05f});
-	enemy_->SetGameScene(this);
+	LoadEnemyPopDate();
 	ResetTime();
 
 	skydome_ = new Skydome();
@@ -84,7 +83,11 @@ void GameScene::Update() {
 		}
 		return false;
 	});
-	enemy_->Update();
+	//enemy_->Update();
+	UpdateEnemyPopCommands();
+	for (Enemy* enemy : enemies_) {
+		enemy->Update();
+	}
 	for (TimedCall* timedCall : timedCalls_) {
 		timedCall->Update();
 	}
@@ -144,7 +147,10 @@ void GameScene::Draw() {
 	//model_->Draw(worldTransform_, viewProjection_, character);
 	skydome_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
-	enemy_->Draw(viewProjection_);
+	//enemy_->Draw(viewProjection_);
+	for (Enemy* enemy : enemies_) {
+		enemy->Draw(viewProjection_);
+	}
 	for (EnemyBullet* bullet : enemyBullets_) {
 		bullet->Draw(viewProjection_);
 	}
@@ -188,16 +194,19 @@ void GameScene::CheckAllCollision() {
 	#pragma endregion
 
 	#pragma region 自弾と敵キャラの当たり判定
-	posA = enemy_->GetWorldPosition();
+	for (Enemy* enemy : enemies_) {
+	posA = enemy->GetWorldPosition();
 
 	for (Bullet* bullet : playerBullets_) {
-		posB = bullet->GetWorldPosition();
+			posB = bullet->GetWorldPosition();
 
-		Vector3 distance = Subtract(posA, posB);
-		if (std::pow(distance.x, 2) + std::pow(distance.y, 2) + std::pow(distance.z, 2) <= 3 * 3) {
-			enemy_->OnCollision();
-			bullet->OnCollision();
-		}
+			Vector3 distance = Subtract(posA, posB);
+			if (std::pow(distance.x, 2) + std::pow(distance.y, 2) + std::pow(distance.z, 2) <=
+			    3 * 3) {
+				enemy->OnCollision();
+				bullet->OnCollision();
+			}
+	}
 	}
 	#pragma endregion
 
@@ -228,18 +237,19 @@ void GameScene::Fire() {
 
 	/*Vector3 velocity(0, 0, kBulletSpeed);
 	velocity = TransformNormal(velocity, worldTransform_.matWorld_);*/
+	for (Enemy* enemy : enemies_) {
+		Vector3 distance = Subtract(enemy->GetWorldPosition(), player_->GetWorldPosition());
+		Vector3 normalize = Normalize(distance);
+		Vector3 velocity = {};
+		velocity.x = -normalize.x;
+		velocity.y = -normalize.y;
+		velocity.z = -normalize.z;
 
-	Vector3 distance = Subtract(enemy_->GetWorldPosition(), player_->GetWorldPosition());
-	Vector3 normalize = Normalize(distance);
-	Vector3 velocity = {};
-	velocity.x = -normalize.x;
-	velocity.y = -normalize.y;
-	velocity.z = -normalize.z;
+		EnemyBullet* newBullet = new EnemyBullet();
+		newBullet->Initialize(model_, enemy->GetWorldPosition(), velocity);
 
-	EnemyBullet* newBullet = new EnemyBullet();
-	newBullet->Initialize(model_, enemy_->GetWorldPosition(), velocity);
-
-	enemyBullets_.push_back(newBullet);
+		enemyBullets_.push_back(newBullet);
+	}
 }
 
 void GameScene::ResetTime() {
@@ -249,4 +259,48 @@ void GameScene::ResetTime() {
 	std::function<void(void)> callback = std::bind(&GameScene::ResetTime, this);
 	TimedCall* timedCall = new TimedCall(callback, 30);
 	timedCalls_.push_back(timedCall);
+}
+
+void GameScene::LoadEnemyPopDate() { 
+
+	std::ifstream file;
+	file.open("./Resources/enemyPop.csv");
+	assert(file.is_open());
+
+	enemyPopCommands << file.rdbuf();
+
+	file.close();
+}
+
+void GameScene::UpdateEnemyPopCommands() { 
+	std::string line;
+	while (getline(enemyPopCommands, line)) {
+		std::istringstream line_stream(line);
+		std::string word;
+		getline(line_stream, word, ',');
+		if (word.find("//") == 0) {
+			continue;
+		}
+		if (word.find("POP") == 0) {
+			getline(line_stream, word, ',');
+			float x = (float)std::atof(word.c_str());
+
+			getline(line_stream, word, ',');
+			float y = (float)std::atof(word.c_str());
+
+			getline(line_stream, word, ',');
+			float z = (float)std::atof(word.c_str());
+
+			spawnEnemy(Vector3(x, y, z));
+			break;
+		}
+	}
+}
+
+void GameScene::spawnEnemy(Vector3 pos) {
+	Enemy* newEnemy = new Enemy();
+	newEnemy->SetPlayer(player_);
+	newEnemy->Initialize(model_, {pos.x, pos.y, pos.z}, {0.0f, 0.0f, 0.0f});
+	newEnemy->SetGameScene(this);
+	enemies_.push_back(newEnemy);
 }
