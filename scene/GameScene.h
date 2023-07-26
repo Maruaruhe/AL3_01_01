@@ -50,6 +50,16 @@ public: // メンバ関数
 /// </summary>
 	void CheckAllCollision();
 
+/// <summary>
+/// 敵弾を追加する
+/// </summary>
+	void AddEnemyBullet(EnemyBullet* enemyBullet);
+
+	const std::list<EnemyBullet*>& GetBullets() const { return enemyBullets_; }
+
+	void Fire();
+	void ResetTime();
+
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -72,6 +82,10 @@ private: // メンバ変数
 
 	bool isDebugCameraActive = false;
 	DebugCamera* debugCamera_ = nullptr;
+
+
+	std::list<EnemyBullet*> enemyBullets_;
+	std::list<TimedCall*> timedCalls_;
 
 	/// <summary>
 	/// ゲームシーン用

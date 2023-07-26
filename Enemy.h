@@ -5,6 +5,8 @@
 #include "TimedCall.h"
 #include <list>
 
+class GameScene;
+
 class Player;
 
 class Enemy;
@@ -36,12 +38,12 @@ public:
 	void ChangeState(BaseEnemyState* newState);
 	void move(const Vector3& velocity);
 
-	void Fire();
+	//void Fire();
 	Vector3 SetPosition(const Vector3& position) { return position; }
 	Vector3 SetVelocity(const Vector3& velocity) { return velocity; }
 	WorldTransform GetTransform() { return worldTransform_; }
 
-	void ResetTime();
+	//void ResetTime();
 
 	Vector3 GetWorldPosition();
 
@@ -51,11 +53,14 @@ public:
 
 	void OnCollision();
 
-	const std::list<EnemyBullet*>& GetBullets() const { return bullets_; }
+	//const std::list<EnemyBullet*>& GetBullets() const { return enemyBullets_; }
+
+	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 
 private:
-	std::list<EnemyBullet*> bullets_;
-	std::list<TimedCall*> timedCalls_;
+	GameScene* gameScene_ = nullptr;
+	//std::list<EnemyBullet*> bullets_;
+	//std::list<TimedCall*> timedCalls_;
 
 	WorldTransform worldTransform_;
 	Model* model_;
