@@ -86,9 +86,6 @@ void Player::Update(ViewProjection viewProjection) {
 	worldTransform_.translation_.x = std::clamp(worldTransform_.translation_.x, -kMoveLimitX,kMoveLimitX);
 	worldTransform_.translation_.y = std::clamp(worldTransform_.translation_.y, -kMoveLimitY,kMoveLimitY);
 
-	/*worldTransform_.matWorld_ = MakeAffineMatrix(
-	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);*/
-
 	 worldTransform_.UpdateMatrix();
 
 	 const float kDistancePlayerTo3DReticle = 50.0f;
@@ -96,7 +93,6 @@ void Player::Update(ViewProjection viewProjection) {
 	 Vector3 offset = {0, 0, 1.0f};
 	 
 	 offset = TransformNormal(offset, worldTransform_.matWorld_);
-	 //offset = MultiplyVectorMatrix(offset, worldTransform_.matWorld_);
 	 offset.x = Normalize(offset).x * kDistancePlayerTo3DReticle;
 	 offset.y = Normalize(offset).y * kDistancePlayerTo3DReticle;
 	 offset.z = Normalize(offset).z * kDistancePlayerTo3DReticle;
@@ -111,7 +107,6 @@ void Player::Update(ViewProjection viewProjection) {
 	 Vector3 positionReticle = worldTransform3DReticle_.translation_;
 	 Matrix4x4 matViewport = MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
 	 Matrix4x4 matViewProjectionViewport = Multiply(viewProjection.matView , Multiply(viewProjection.matProjection , matViewport));
-	 //Matrix4x4 matViewProjectionViewport = Multiply(viewProjection.matView , Multiply(viewProjection.matProjection , matViewport));
 	 positionReticle = Transform(positionReticle, matViewProjectionViewport);
 	 sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
 
@@ -125,7 +120,6 @@ void Player::Update(ViewProjection viewProjection) {
 
 void Player::Draw(ViewProjection viewProjection_) {
 	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
-	 //reticleModel_->Draw(worldTransform3DReticle_, viewProjection_, textureHandle_);
 	 for (Bullet* bullet : bullets_) {
 		bullet->Draw(viewProjection_);
 	 }

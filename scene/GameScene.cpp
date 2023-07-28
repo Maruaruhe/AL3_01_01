@@ -8,19 +8,15 @@ GameScene::GameScene() {
 }
 
 GameScene::~GameScene() { 
-	//delete sprite_;
 	delete model_;
-
 	delete player_;
 	delete debugCamera_;
-	//delete enemy_;
 	for (Enemy* enemy : enemies_) {
 		delete enemy;
 	}
 	for (EnemyBullet* bullet : enemyBullets_) {
 		delete bullet;
 	}
-
 	delete skydome_;
 	delete modelSkydome_;
 	delete railCamera_;
@@ -33,7 +29,6 @@ void GameScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
-	//sprite_ = Sprite::Create(character, {100, 50});
 	worldTransform_.Initialize();
 
 	viewProjection_.farZ = 1000;
@@ -85,7 +80,6 @@ void GameScene::Update() {
 		}
 		return false;
 	});
-	//enemy_->Update();
 	UpdateEnemyPopCommands();
 	for (Enemy* enemy : enemies_) {
 		enemy->Update();
@@ -237,9 +231,6 @@ void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
 void GameScene::Fire() {
 	assert(player_);
 	const float kBulletSpeed = 1.0f;
-
-	/*Vector3 velocity(0, 0, kBulletSpeed);
-	velocity = TransformNormal(velocity, worldTransform_.matWorld_);*/
 	for (Enemy* enemy : enemies_) {
 		Vector3 distance = Subtract(enemy->GetWorldPosition(), player_->GetWorldPosition());
 		Vector3 normalize = Normalize(distance);
