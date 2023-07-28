@@ -99,9 +99,9 @@ void Player::Update(ViewProjection viewProjection) {
 	 //Vector3 posNear = Vector3(mousePosition.x - 640, mousePosition.y, 0);
 	 //Vector3 posFar = Vector3(mousePosition.x-640, mousePosition.y, 1);
 	 Vector3 posNear =
-	     Vector3(sprite2DReticle_->GetPosition().x, sprite2DReticle_->GetPosition().y, 0);
+	     Vector3(sprite2DReticle_->GetPosition().x - 640, sprite2DReticle_->GetPosition().y, 0);
 	 Vector3 posFar =
-	     Vector3(sprite2DReticle_->GetPosition().x, sprite2DReticle_->GetPosition().y, 1);
+	     Vector3(sprite2DReticle_->GetPosition().x - 640, sprite2DReticle_->GetPosition().y, 1);
 	 posNear = Transform(posNear, matInverseVPV);
 	 posFar = Transform(posFar, matInverseVPV);
 
