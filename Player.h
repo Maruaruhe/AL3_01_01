@@ -20,6 +20,8 @@ public:
 
 	void Draw(ViewProjection viewProjection_);
 
+	void Move();
+
 	void Attack();
 
 	Vector3 GetWorldPosition();

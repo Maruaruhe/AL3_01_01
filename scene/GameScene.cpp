@@ -151,6 +151,7 @@ void GameScene::Draw() {
 		bullet->Draw(viewProjection_);
 	}
 
+
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion

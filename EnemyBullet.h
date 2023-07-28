@@ -25,7 +25,7 @@ private:
 	Model* model_;
 	uint32_t textureHandle_ = 0u;
 	Vector3 velocity_;
-	static const int32_t kLifeTime = 60 * 5;
+	static const int32_t kLifeTime = 60 * 2;
 	int32_t deathTimer = kLifeTime;
 	bool isDead_ = false;
 };

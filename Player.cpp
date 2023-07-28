@@ -36,8 +36,6 @@ void Player::Initialize(
 }
 
 void Player::Update(ViewProjection viewProjection) { 
-	Vector3 move = {0, 0, 0};
-	const float kCharacterSpeed = 0.2f;
 	bullets_.remove_if([] (Bullet * bullet) {
 		if (bullet->isDead()) {
 			delete bullet;
@@ -45,43 +43,8 @@ void Player::Update(ViewProjection viewProjection) {
 		}
 		return false;
 	});
-	if (input_->PushKey(DIK_LEFT)) {
-		move.x -= kCharacterSpeed;
-	} else if (input_->PushKey(DIK_RIGHT)) {
-		move.x += kCharacterSpeed;
-	}
-
-	if (input_->PushKey(DIK_UP)) {
-		move.y += kCharacterSpeed;
-	} else if (input_->PushKey(DIK_DOWN)) {
-		move.y -= kCharacterSpeed;
-	}
-
 	
-	if (input_->PushKey(DIK_A)){
-		worldTransform_.rotation_.y -= kRotSpeed;
-	}
-	else if(input_->PushKey(DIK_D)){
-		worldTransform_.rotation_.y += kRotSpeed;
-	}
-
-	worldTransform_.translation_.x += move.x;
-	worldTransform_.translation_.y += move.y;
-	worldTransform_.translation_.z += move.z;
-
-	float position[3] = {
-	    worldTransform_.translation_.x, worldTransform_.translation_.y,
-	    worldTransform_.translation_.z};
-
-
-	ImGui::Begin("space desu");
-
-	ImGui::SliderFloat3("Player", position, -30.0f, 30.0f);
-
-	ImGui::End();
-
-	worldTransform_.translation_.x = position[0];
-	worldTransform_.translation_.y = position[1];
+	Move();
 
 	worldTransform_.translation_.x = std::clamp(worldTransform_.translation_.x, -kMoveLimitX,kMoveLimitX);
 	worldTransform_.translation_.y = std::clamp(worldTransform_.translation_.y, -kMoveLimitY,kMoveLimitY);
@@ -122,18 +85,18 @@ void Player::Update(ViewProjection viewProjection) {
 	 Matrix4x4 matVPV = Multiply(viewProjection.matView, Multiply(viewProjection.matProjection, matViewport));
 	 Matrix4x4 matInverseVPV = Inverse(matVPV);
 
-	 Vector3 posNear = Vector3(mousePosition.x, mousePosition.y, 0);
-	 Vector3 posFar = Vector3(mousePosition.x, mousePosition.y, 1);
+	 Vector3 posNear = Vector3(mousePosition.x - 640, mousePosition.y, 0);
+	 Vector3 posFar = Vector3(mousePosition.x-640, mousePosition.y, 1);
 	 posNear = Transform(posNear, matInverseVPV);
 	 posFar = Transform(posFar, matInverseVPV);
 
 	 Vector3 mouseDirection = Subtract(posFar, posNear);
 	 mouseDirection = Normalize(mouseDirection);
 
-	 const float kDistanceTestObject = 50.0f;
-	 worldTransform3DReticle_.translation_.x = posNear.x + mouseDirection.x + kDistanceTestObject;
-	 worldTransform3DReticle_.translation_.y = posNear.y + mouseDirection.y + kDistanceTestObject;
-	 worldTransform3DReticle_.translation_.z = posNear.z + mouseDirection.z + kDistanceTestObject;
+	 const float kDistanceTestObject = 150.0f;
+	 worldTransform3DReticle_.translation_.x = posNear.x + mouseDirection.x * kDistanceTestObject;
+	 worldTransform3DReticle_.translation_.y = posNear.y + mouseDirection.y * kDistanceTestObject;
+	 worldTransform3DReticle_.translation_.z = posNear.z + mouseDirection.z * kDistanceTestObject;
 
 	 worldTransform3DReticle_.UpdateMatrix();
 	 worldTransform3DReticle_.TransferMatrix();
@@ -160,6 +123,45 @@ void Player::Draw(ViewProjection viewProjection_) {
 	 for (Bullet* bullet : bullets_) {
 		bullet->Draw(viewProjection_);
 	 }
+}
+
+void Player::Move(){
+	 Vector3 move = {0, 0, 0};
+	 const float kCharacterSpeed = 0.2f;
+	 if (input_->PushKey(DIK_LEFT)) {
+		move.x -= kCharacterSpeed;
+	 } else if (input_->PushKey(DIK_RIGHT)) {
+		move.x += kCharacterSpeed;
+	 }
+
+	 if (input_->PushKey(DIK_UP)) {
+		move.y += kCharacterSpeed;
+	 } else if (input_->PushKey(DIK_DOWN)) {
+		move.y -= kCharacterSpeed;
+	 }
+
+	 if (input_->PushKey(DIK_A)) {
+		worldTransform_.rotation_.y -= kRotSpeed;
+	 } else if (input_->PushKey(DIK_D)) {
+		worldTransform_.rotation_.y += kRotSpeed;
+	 }
+
+	 worldTransform_.translation_.x += move.x;
+	 worldTransform_.translation_.y += move.y;
+	 worldTransform_.translation_.z += move.z;
+
+	 float position[3] = {
+	     worldTransform_.translation_.x, worldTransform_.translation_.y,
+	     worldTransform_.translation_.z};
+
+	 ImGui::Begin("space desu");
+
+	 ImGui::SliderFloat3("Player", position, -30.0f, 30.0f);
+
+	 ImGui::End();
+
+	 worldTransform_.translation_.x = position[0];
+	 worldTransform_.translation_.y = position[1];
 }
 
 void Player::Attack() {
