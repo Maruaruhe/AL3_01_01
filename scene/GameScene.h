@@ -66,6 +66,7 @@ public: // メンバ関数
 
 	void spawnEnemy(Vector3 pos);
 
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;

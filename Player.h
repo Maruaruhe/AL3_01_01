@@ -6,6 +6,7 @@
 #include "Matrix.h"
 #include "Vec3.h"
 #include "Bullet.h"
+#include <Sprite.h>
 #include <list>
 
 class Player {
@@ -15,7 +16,7 @@ public:
 
 	void Initialize(Model* model, Model* reticleModel, uint32_t textureHandle, Vector3 playerPosition);
 
-	void Update();
+	void Update(ViewProjection viewProjection);
 
 	void Draw(ViewProjection viewProjection_);
 
@@ -29,10 +30,14 @@ public:
 
 	void SetParent(const WorldTransform* parent);
 
+	void DrawUI();
+
 private:
 	WorldTransform worldTransform_;
 
 	WorldTransform worldTransform3DReticle_;
+
+	Sprite* sprite2DReticle_ = nullptr;
 
 	Model* model_ = nullptr;
 	Model* reticleModel_ = nullptr;

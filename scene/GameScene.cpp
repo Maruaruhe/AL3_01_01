@@ -28,6 +28,7 @@ GameScene::~GameScene() {
 
 void GameScene::Initialize() {
 	character = TextureManager::Load("NineFox.png");
+	TextureManager::Load("reticle.png");
 
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
@@ -68,7 +69,7 @@ void GameScene::Update() {
 
 	viewProjection_.TransferMatrix();
 
-	player_->Update();
+	player_->Update(viewProjection_);
 	enemyBullets_.remove_if([](EnemyBullet* bullet) {
 		if (bullet->isDead()) {
 			delete bullet;
@@ -164,6 +165,7 @@ void GameScene::Draw() {
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(commandList);
 
+	player_->DrawUI();
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>

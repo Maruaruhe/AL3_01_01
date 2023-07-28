@@ -9,9 +9,11 @@ Player::~Player() {
 	 for (Bullet* bullet : bullets_) {
 		delete bullet;
 	}
+	 delete sprite2DReticle_;
 }
 
-void Player::Initialize(Model* model, Model* reticleModel, uint32_t textureHandle, Vector3 playerPosition) { 
+void Player::Initialize(
+    Model* model, Model* reticleModel, uint32_t textureHandle, Vector3 playerPosition) {
 	model_ = Model::Create();
 	assert(model);
 
@@ -21,6 +23,9 @@ void Player::Initialize(Model* model, Model* reticleModel, uint32_t textureHandl
 	model_ = model;
 	reticleModel_ = reticleModel;
 	textureHandle_ = textureHandle;
+	uint32_t textureReticle = TextureManager::Load("reticle.png");
+	sprite2DReticle_ = Sprite::Create(textureReticle, {640, 360}, {1, 1, 1, 1}, {0.5, 0.5});
+
 	input_ = Input::GetInstance();
 
 
@@ -30,7 +35,7 @@ void Player::Initialize(Model* model, Model* reticleModel, uint32_t textureHandl
 	worldTransform3DReticle_.Initialize();
 }
 
-void Player::Update() { 
+void Player::Update(ViewProjection viewProjection) { 
 	Vector3 move = {0, 0, 0};
 	const float kCharacterSpeed = 0.2f;
 	bullets_.remove_if([] (Bullet * bullet) {
@@ -103,6 +108,14 @@ void Player::Update() {
 	 worldTransform3DReticle_.UpdateMatrix();
 	 worldTransform3DReticle_.TransferMatrix();
 
+	 Vector3 positionReticle = worldTransform3DReticle_.translation_;
+	 Matrix4x4 matViewport = MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
+	 Matrix4x4 matViewProjectionViewport = Multiply(viewProjection.matView , Multiply(viewProjection.matProjection , matViewport));
+	 //Matrix4x4 matViewProjectionViewport = Multiply(viewProjection.matView , Multiply(viewProjection.matProjection , matViewport));
+	 positionReticle = Transform(positionReticle, matViewProjectionViewport);
+	 sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
+
+
 	 Attack();
 
 	 for (Bullet* bullet : bullets_) {
@@ -112,7 +125,7 @@ void Player::Update() {
 
 void Player::Draw(ViewProjection viewProjection_) {
 	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
-	 reticleModel_->Draw(worldTransform3DReticle_, viewProjection_, textureHandle_);
+	 //reticleModel_->Draw(worldTransform3DReticle_, viewProjection_, textureHandle_);
 	 for (Bullet* bullet : bullets_) {
 		bullet->Draw(viewProjection_);
 	 }
@@ -148,3 +161,7 @@ void Player::OnCollision() {
 void Player::SetParent(const WorldTransform* parent) { 
 	worldTransform_.parent_ = parent;
 	}
+
+void Player::DrawUI() { 
+	sprite2DReticle_->Draw();
+}
