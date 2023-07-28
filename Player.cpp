@@ -88,6 +88,7 @@ void Player::Update(ViewProjection viewProjection) {
 
 	 worldTransform_.UpdateMatrix();
 
+	 //3DReticle
 	 const float kDistancePlayerTo3DReticle = 50.0f;
 
 	 Vector3 offset = {0, 0, 1.0f};
@@ -104,13 +105,49 @@ void Player::Update(ViewProjection viewProjection) {
 	 worldTransform3DReticle_.UpdateMatrix();
 	 worldTransform3DReticle_.TransferMatrix();
 
+	 //2DReticle
 	 Vector3 positionReticle = worldTransform3DReticle_.translation_;
 	 Matrix4x4 matViewport = MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
 	 Matrix4x4 matViewProjectionViewport = Multiply(viewProjection.matView , Multiply(viewProjection.matProjection , matViewport));
 	 positionReticle = Transform(positionReticle, matViewProjectionViewport);
 	 sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
+	 //2D標準
+	 POINT mousePosition;
+	 GetCursorPos(&mousePosition);
 
+	 HWND hwnd = WinApp::GetInstance()->GetHwnd();
+	 ScreenToClient(hwnd, &mousePosition);
+	 sprite2DReticle_->SetPosition(Vector2(mousePosition.x, mousePosition.y));
+	 //
+	 Matrix4x4 matVPV = Multiply(viewProjection.matView, Multiply(viewProjection.matProjection, matViewport));
+	 Matrix4x4 matInverseVPV = Inverse(matVPV);
 
+	 Vector3 posNear = Vector3(mousePosition.x, mousePosition.y, 0);
+	 Vector3 posFar = Vector3(mousePosition.x, mousePosition.y, 1);
+	 posNear = Transform(posNear, matInverseVPV);
+	 posFar = Transform(posFar, matInverseVPV);
+
+	 Vector3 mouseDirection = Subtract(posFar, posNear);
+	 mouseDirection = Normalize(mouseDirection);
+
+	 const float kDistanceTestObject = 50.0f;
+	 worldTransform3DReticle_.translation_.x = posNear.x + mouseDirection.x + kDistanceTestObject;
+	 worldTransform3DReticle_.translation_.y = posNear.y + mouseDirection.y + kDistanceTestObject;
+	 worldTransform3DReticle_.translation_.z = posNear.z + mouseDirection.z + kDistanceTestObject;
+
+	 worldTransform3DReticle_.UpdateMatrix();
+	 worldTransform3DReticle_.TransferMatrix();
+
+	 ImGui::Begin("Player");
+	 ImGui::Text(
+	     "2DReticle:(%f,%f)", sprite2DReticle_->GetPosition().x, sprite2DReticle_->GetPosition().y);
+	 ImGui::Text("Near:(%+.2f,%+.2f,%+.2f)", posNear.x, posNear.y, posNear.z);
+	 ImGui::Text("Far:(%+.2f,%+.2f,%+.2f)", posFar.x, posFar.y, posFar.z);
+	 ImGui::Text(
+	     "3DReticle:(%+.2f,%+.2f,%+.2f)", worldTransform3DReticle_.translation_.x,
+	     worldTransform3DReticle_.translation_.y, worldTransform3DReticle_.translation_.z);
+	 ImGui::End();
+	 //
 	 Attack();
 
 	 for (Bullet* bullet : bullets_) {
@@ -128,8 +165,11 @@ void Player::Draw(ViewProjection viewProjection_) {
 void Player::Attack() {
 	if (input_->PushKey(DIK_SPACE)) {
 		const float kBulletSpeed = 1.0f;
-		Vector3 velocity(0, 0, kBulletSpeed);
-		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+		//Vector3 velocity(0, 0, kBulletSpeed);
+		//velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+		Vector3 velocity =
+		    Subtract(worldTransform3DReticle_.translation_, worldTransform_.translation_);
+		velocity = Normalize(velocity);
 		Bullet* newBullet = new Bullet();
 		//newBullet->Initialize(model_, worldTransform_.translation_,velocity);
 		newBullet->Initialize(model_, GetWorldPosition(), velocity);
@@ -155,6 +195,31 @@ void Player::OnCollision() {
 void Player::SetParent(const WorldTransform* parent) { 
 	worldTransform_.parent_ = parent;
 	}
+
+WorldTransform Player::Create3DReticle() {
+	const float kDistancePlayerTo3DReticle = 50.0f;
+
+	Vector3 offset = {0, 0, 1.0f};
+
+	offset = TransformNormal(offset, worldTransform_.matWorld_);
+	offset.x = Normalize(offset).x * kDistancePlayerTo3DReticle;
+	offset.y = Normalize(offset).y * kDistancePlayerTo3DReticle;
+	offset.z = Normalize(offset).z * kDistancePlayerTo3DReticle;
+
+	WorldTransform worldTransform3DReticle;
+	worldTransform3DReticle.translation_.x = offset.x + worldTransform_.translation_.x;
+	worldTransform3DReticle.translation_.y = offset.y + worldTransform_.translation_.y;
+	worldTransform3DReticle.translation_.z = offset.z + worldTransform_.translation_.z;
+
+	worldTransform3DReticle.UpdateMatrix();
+	worldTransform3DReticle.TransferMatrix();
+
+	return worldTransform3DReticle;
+}
+
+void Player::Create2DReticle() {
+
+}
 
 void Player::DrawUI() { 
 	sprite2DReticle_->Draw();

@@ -30,6 +30,8 @@ public:
 
 	void SetParent(const WorldTransform* parent);
 
+	WorldTransform Create3DReticle();
+	void Create2DReticle();
 	void DrawUI();
 
 private:
