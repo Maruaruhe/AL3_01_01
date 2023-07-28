@@ -33,6 +33,8 @@ void Player::Initialize(
 	worldTransform_.Initialize();
 	worldTransform_.translation_= Add(worldTransform_.rotation_, playerPosition);
 	worldTransform3DReticle_.Initialize();
+
+	sprite2DReticle_->SetPosition(Vector2(640, 360));
 }
 
 void Player::Update(ViewProjection viewProjection) { 
@@ -73,7 +75,7 @@ void Player::Update(ViewProjection viewProjection) {
 	 Matrix4x4 matViewport = MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
 	 Matrix4x4 matViewProjectionViewport = Multiply(viewProjection.matView , Multiply(viewProjection.matProjection , matViewport));
 	 positionReticle = Transform(positionReticle, matViewProjectionViewport);
-	 sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
+	 //sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
 	 //2D標準
 	 //マウス
 	 /*POINT mousePosition;
@@ -87,8 +89,8 @@ void Player::Update(ViewProjection viewProjection) {
 	 XINPUT_STATE joyState;
 
 	 if (Input::GetInstance()->GetJoystickState(0, joyState)) {
-		spritePosition.x += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * 5.0f;
-		spritePosition.y += (float)joyState.Gamepad.sThumbRY / SHRT_MAX * 5.0f;
+		spritePosition.x += ((float)joyState.Gamepad.sThumbRX / SHRT_MAX * 5.0f);
+		spritePosition.y -= ((float)joyState.Gamepad.sThumbRY / SHRT_MAX * 5.0f);
 		sprite2DReticle_->SetPosition(spritePosition);
 	 }
 
