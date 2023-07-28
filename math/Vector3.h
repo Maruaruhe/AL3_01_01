@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 /// <summary>
 /// 3次元ベクトル
