@@ -95,7 +95,7 @@ void Enemy::move(const Vector3& velocity) {
 //}
 
 void Enemy::ChangeState(BaseEnemyState* newState) { 
-	delete state;
+	//delete state;
 	state=newState;
 }
 
