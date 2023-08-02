@@ -133,7 +133,7 @@ void Player::Draw(ViewProjection viewProjection_) {
 
 void Player::Attack() {
 	if (input_->PushKey(DIK_SPACE)) {
-		const float kBulletSpeed = 1.0f;
+		//const float kBulletSpeed = 1.0f;
 		/*Vector3 velocity(0, 0, kBulletSpeed);
 		velocity = TransformNormal(velocity, worldTransform_.matWorld_);*/
 		Vector3 velocity = Subtract(worldTransform3DReticle_.translation_, worldTransform_.translation_);
