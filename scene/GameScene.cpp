@@ -28,7 +28,7 @@ GameScene::~GameScene() {
 
 void GameScene::Initialize() {
 	character = TextureManager::Load("NineFox.png");
-	TextureManager::Load("reticle.png");
+	//TextureManager::Load("reticle.png");
 
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
