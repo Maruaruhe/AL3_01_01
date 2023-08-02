@@ -1,4 +1,4 @@
-#include "GameScene.h"
+﻿#include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
 #include "AxisIndicator.h"
@@ -231,7 +231,7 @@ void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
 
 void GameScene::Fire() {
 	assert(player_);
-	const float kBulletSpeed = 1.0f;
+	//const float kBulletSpeed = 1.0f;
 	for (Enemy* enemy : enemies_) {
 		Vector3 distance = Subtract(enemy->GetWorldPosition(), player_->GetWorldPosition());
 		Vector3 normalize = Normalize(distance);

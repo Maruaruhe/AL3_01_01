@@ -204,7 +204,7 @@ void Player::Attack() {
 		return;
 	}
 	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) {
-		const float kBulletSpeed = 1.0f;
+		//const float kBulletSpeed = 1.0f;
 		Vector3 velocity =
 		    Subtract(worldTransform3DReticle_.translation_, worldTransform_.translation_);
 		velocity = Normalize(velocity);
