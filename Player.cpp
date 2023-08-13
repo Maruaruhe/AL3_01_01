@@ -78,14 +78,14 @@ void Player::Update(ViewProjection viewProjection) {
 	 //sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
 	 //2D標準
 	 //マウス
-	 /*POINT mousePosition;
-	 GetCursorPos(&mousePosition);
+	 //POINT mousePosition;
+	 //GetCursorPos(&mousePosition);
 
-	 HWND hwnd = WinApp::GetInstance()->GetHwnd();
-	 ScreenToClient(hwnd, &mousePosition);
-	 sprite2DReticle_->SetPosition(Vector2(mousePosition.x, mousePosition.y));*/
+	 //HWND hwnd = WinApp::GetInstance()->GetHwnd();
+	 //ScreenToClient(hwnd, &mousePosition);
+	 //sprite2DReticle_->SetPosition(Vector2(mousePosition.x, mousePosition.y));
 	 //コントローラー
-	 Vector2 spritePosition = sprite2DReticle_->GetPosition();
+	Vector2 spritePosition = sprite2DReticle_->GetPosition();
 	 XINPUT_STATE joyState;
 
 	 if (Input::GetInstance()->GetJoystickState(0, joyState)) {
