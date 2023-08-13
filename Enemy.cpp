@@ -30,18 +30,5 @@ void Enemy::move(const Vector3& velocity) {
 
 
 void Enemy::ChangeState(BaseEnemyState* newState) { 
-	delete state;
 	state=newState;
-}
-
-void EnemyStateApproach::Update(Enemy* enemy) {
-	const Vector3 velocity = {0.0f, 0.0f, -0.5f};
-	enemy->move(velocity);
-	if (enemy->GetTransform().translation_.z < -10.0f) {
-		enemy->ChangeState(new EnemyStateLeave());
-	}
-}
-void EnemyStateLeave::Update(Enemy* enemy) {
-	const Vector3 velocity = {-0.25f, 0.25f, -0.25f};
-	enemy->move(velocity);
 }
