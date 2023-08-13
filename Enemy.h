@@ -1,6 +1,7 @@
 #pragma once
 #include <Model.h>
 #include <WorldTransform.h>
+#include "EnemyState.h"
 
 class Enemy;
 
