@@ -12,9 +12,6 @@ void Bullet::Initialize(Model* model, const Vector3& position, const Vector3& ve
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 	velocity_ = velocity;
-
-	SetCollisionAttribute(kCollisionAttributePlayer);
-	SetCollisionMask(~kCollisionAttributePlayer);
 }
 
 void Bullet::Update() { 
