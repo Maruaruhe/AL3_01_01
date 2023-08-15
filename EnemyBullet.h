@@ -3,8 +3,9 @@
 #include "Vec3.h"
 #include "Player.h"
 #include <WorldTransform.h>
+#include "Collider.h"
 
-class EnemyBullet {
+class EnemyBullet : public Collider {
 public:
 	// Bullet();
 	//~Bullet();

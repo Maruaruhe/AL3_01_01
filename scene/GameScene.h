@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include"DebugCamera.h"
+#include "Collider.h"
 
 /// <summary>
 /// ゲームシーン
@@ -50,6 +51,9 @@ public: // メンバ関数
 
 
 private: // メンバ変数
+
+	void CheckCollisionPair(Collider* colliderA, Collider* colliderB);
+
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;

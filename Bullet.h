@@ -2,8 +2,9 @@
 #include "Model.h"
 #include "Vector3.h"
 #include <WorldTransform.h>
+#include "Collider.h"
 
-class Bullet {
+class Bullet : public Collider {
 public:
 	//Bullet();
 	//~Bullet();

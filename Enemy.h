@@ -4,6 +4,7 @@
 #include "EnemyBullet.h"
 #include "TimedCall.h"
 #include <list>
+#include "Collider.h"
 
 class Player;
 
@@ -24,7 +25,7 @@ public:
 	void Update(Enemy* enemy);
 };
 
-class Enemy {
+class Enemy:public Collider {
 public:
 	Enemy();
 	~Enemy();

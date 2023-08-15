@@ -7,8 +7,9 @@
 #include "Vec3.h"
 #include "Bullet.h"
 #include <list>
+#include "Collider.h"
 
-class Player {
+class Player : public Collider{
 public:
 	Player();
 	~Player();

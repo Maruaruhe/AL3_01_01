@@ -156,3 +156,14 @@ void GameScene::CheckAllCollision() {
 	}
 	#pragma endregion
 }
+
+void GameScene::CheckCollisionPair(Collider* colliderA, Collider* colliderB) {
+	Vector3 posA = colliderA->GetWorldPosition();
+	Vector3 posB = colliderB->GetWorldPosition();
+	float length = Length(Subtract(posA, posB));
+	// 交差判定
+	if (length <= colliderA->GetRadius() + colliderB->GetRadius()) {
+		colliderA->OnCollision();
+		colliderB->OnCollision();
+	}
+}
