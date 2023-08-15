@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector3.h"
+#include "CollisionConfig.h"
 
 class Collider {
 public:

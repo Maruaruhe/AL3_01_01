@@ -160,6 +160,10 @@ void GameScene::CheckAllCollision() {
 }
 
 void GameScene::CheckCollisionPair(Collider* colliderA, Collider* colliderB) {
+	if ((colliderA->GetCollisionAttribute() & colliderB->GetCollisionMask()) == 0 ||
+	    (colliderA->GetCollisionMask() & colliderB->GetCollisionAttribute()) == 0) {
+		return;
+	}
 	Vector3 posA = colliderA->GetWorldPosition();
 	Vector3 posB = colliderB->GetWorldPosition();
 	float length = Length(Subtract(posA, posB));
