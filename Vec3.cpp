@@ -86,26 +86,50 @@ float dotYZ(Vector3 v1, Vector3 v2) {
 	return result;
 }
 
+float Dot(const Vector3& v1, const Vector3& v2) {
+	float dot = 0.0f;
+
+	dot = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+
+	return dot;
+}
+
+Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t) {
+	Vector3 v3 = {};
+
+	v3.x = v1.x + t * (v2.x - v1.x);
+	v3.y = v1.y + t * (v2.y - v1.y);
+	v3.z = v1.z + t * (v2.z - v1.z);
+
+	return v3;
+}
+
 Vector3 Slerp(const Vector3& v1, const Vector3& v2, float t) {
-	Vector3 result = {};
-	Vector3 angle = {
-	    std::acos(v1.x * v1.x + v2.x * v2.x), std::acos(v1.y * v1.y + v2.y * v2.y),
-	    std::acos(v1.z * v1.z + v2.z * v2.z)};
+	Vector3 v3 = {};
 
-	angle = {std::sin(angle.x), std::sin(angle.y), std::sin(angle.z)};
+	if (v1.x == v2.x && v1.y == v2.y && v1.z == v2.z) {
+		v3 = Lerp(v1, v2, t);
+		return v3;
+	} else {
+		// 2ÉxÉNÉgÉãä‘ÇÃäpìxÅiâsäpë§Åj
+		float angle = std::acos(Dot(v1, v2));
 
-	Vector3 startPosition = {
-	    sin(angle.x * (1 - t)), sin(angle.y * (1 - t)), sin(angle.z * (1 - t))};
+		// sinÉ∆
+		float SinTh = std::sin(angle);
 
-	Vector3 endPosition = {sin(angle.x * t), sin(angle.y * t), sin(angle.z * t)};
+		// ï‚ä‘åWêî
+		float Ps = std::sin(angle * (1 - t));
+		float Pe = std::sin(angle * t);
 
-	result = Add(Multiply(startPosition, v1), Multiply(endPosition, v2));
+		v3.x = (Ps * v1.x + Pe * v2.x) / SinTh;
+		v3.y = (Ps * v1.y + Pe * v2.y) / SinTh;
+		v3.z = (Ps * v1.z + Pe * v2.z) / SinTh;
 
-	result = Division(result, angle);
+		// àÍâûê≥ãKâªÇµÇƒãÖñ ê¸å`ï‚ä‘Ç…
+		Normalize(v3);
 
-	result = Normalize(result);
-
-	return result;
+		return v3;
+	}
 }
 
 Vector3 Multiply(const Vector3& v1, const Vector3& v2) {

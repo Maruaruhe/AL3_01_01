@@ -25,10 +25,10 @@ void EnemyBullet::Update(Player* player) {
 	SetPlayer(player);
 	Vector3 toPlayer = Subtract(player->GetWorldPosition(), worldTransform_.translation_);
 
-	Normalize(toPlayer);
-	Normalize(velocity_);
+	toPlayer = Normalize(toPlayer);
+	velocity_ = Normalize(velocity_);
 
-	velocity_ = Slerp(velocity_, toPlayer, 1);
+	velocity_ = Slerp(velocity_, toPlayer, 0.2f);
 
 	worldTransform_.scale_.x = 0.5;
 	worldTransform_.scale_.y = 0.5f;
