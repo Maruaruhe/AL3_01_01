@@ -49,7 +49,7 @@ void Enemy::Update() {
 	}
 
 	for (EnemyBullet* bullet : bullets_) {
-		bullet->Update();
+		bullet->Update(player_);
 	}
 
 }

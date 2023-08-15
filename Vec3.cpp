@@ -1,4 +1,5 @@
 #include "Vec3.h"
+#include <cmath>
 #include <assert.h>
 
 Vector3 Add(Vector3 v1, Vector3 v2) {
@@ -82,5 +83,37 @@ float dotYZ(Vector3 v1, Vector3 v2) {
 	distance.y = v1.y - v2.y;
 	distance.z = v1.z - v2.z;
 	result = sqrt(pow(distance.y, 2) + pow(distance.z, 2));
+	return result;
+}
+
+Vector3 Slerp(const Vector3& v1, const Vector3& v2, float t) {
+	Vector3 result = {};
+	Vector3 angle = {
+	    std::acos(v1.x * v1.x + v2.x * v2.x), std::acos(v1.y * v1.y + v2.y * v2.y),
+	    std::acos(v1.z * v1.z + v2.z * v2.z)};
+
+	angle = {std::sin(angle.x), std::sin(angle.y), std::sin(angle.z)};
+
+	Vector3 startPosition = {
+	    sin(angle.x * (1 - t)), sin(angle.y * (1 - t)), sin(angle.z * (1 - t))};
+
+	Vector3 endPosition = {sin(angle.x * t), sin(angle.y * t), sin(angle.z * t)};
+
+	result = Add(Multiply(startPosition, v1), Multiply(endPosition, v2));
+
+	result = Division(result, angle);
+
+	result = Normalize(result);
+
+	return result;
+}
+
+Vector3 Multiply(const Vector3& v1, const Vector3& v2) {
+	Vector3 result = {v1.x * v2.x, v1.y * v2.y, v1.z * v2.z};
+	return result;
+}
+
+Vector3 Division(const Vector3& v1, const Vector3& v2) {
+	Vector3 result = {v1.x / v2.x, v1.y / v2.y, v1.z / v2.z};
 	return result;
 }

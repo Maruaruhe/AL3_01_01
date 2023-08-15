@@ -23,3 +23,9 @@ float Length(const Vector3& v);
 float dotXY(Vector3 v1, Vector3 v2);
 float dotXZ(Vector3 v1, Vector3 v2);
 float dotYZ(Vector3 v1, Vector3 v2);
+
+Vector3 Slerp(const Vector3& v1, const Vector3& v2, float t);
+
+Vector3 Multiply(const Vector3& v1, const Vector3& v2);
+
+Vector3 Division(const Vector3& v1, const Vector3& v2);
