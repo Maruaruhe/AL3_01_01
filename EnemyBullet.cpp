@@ -1,6 +1,7 @@
 #include "EnemyBullet.h"
 #include "Matrix.h"
 #include <assert.h>
+#include "CollisionConfig.h"
 
 
 void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
@@ -10,6 +11,9 @@ void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 	velocity_ = velocity;
+
+	SetCollisionAttribute(kCollisionAttributeEnemy);
+	SetCollisionMask(~kCollisionAttributeEnemy);
 }
 
 void EnemyBullet::Update() {

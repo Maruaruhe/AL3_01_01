@@ -4,6 +4,7 @@
 #include "Vec3.h"
 #include "Player.h"
 #include <assert.h>
+#include "CollisionConfig.h"
 
 Enemy::Enemy() { 
 	state = new EnemyStateApproach(); 
@@ -22,6 +23,9 @@ void Enemy::Initialize(Model* model, const Vector3& position, const Vector3& vel
 	worldTransform_.translation_ = position;
 	velocity_ = velocity;
 	ResetTime();
+
+	SetCollisionAttribute(kCollisionAttributeEnemy);
+	SetCollisionMask(~kCollisionAttributeEnemy);
 }
 void Enemy::Update() {
 	bullets_.remove_if([](EnemyBullet* bullet) {
