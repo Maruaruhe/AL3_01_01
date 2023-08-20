@@ -69,7 +69,7 @@ void Enemy::move(const Vector3& velocity) {
 
 void Enemy::Fire() {
 	assert(player_);
-	const float kBulletSpeed = 1.0f;
+//	const float kBulletSpeed = 1.0f;
 
 
 	/*Vector3 velocity(0, 0, kBulletSpeed);
@@ -99,7 +99,7 @@ void Enemy::ResetTime() {
 }
 
 void Enemy::ChangeState(BaseEnemyState* newState) { 
-	delete state;
+	//delete state;
 	state=newState;
 }
 
