@@ -12,6 +12,7 @@
 #include "Enemy.h"
 #include"DebugCamera.h"
 #include "Collider.h"
+#include "CollisionManager.h"
 
 /// <summary>
 /// ゲームシーン
@@ -44,16 +45,8 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-/// <summary>
-/// 衝突判定と応答
-/// </summary>
-	void CheckAllCollision();
-
 
 private: // メンバ変数
-
-	void CheckCollisionPair(Collider* colliderA, Collider* colliderB);
-
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
@@ -62,6 +55,8 @@ private: // メンバ変数
 
 	Player* player_ = nullptr;
 	Enemy* enemy_ = nullptr;
+
+	CollisionManager* collisionManager_ = nullptr;
 
 	WorldTransform worldTransform_;
 	ViewProjection viewProjection_;
