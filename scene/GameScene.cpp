@@ -23,9 +23,6 @@ GameScene::~GameScene() {
 }
 
 void GameScene::Initialize() {
-	//sound
-	soundDataHandle_ = audio_->LoadWave("bgm.wav");
-	audio_->PlayWave(soundDataHandle_, true);
 	//
 	character = TextureManager::Load("NineFox.png");
 	TextureManager::Load("reticle.png");
@@ -33,6 +30,11 @@ void GameScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+
+	// sound
+	soundDataHandle_ = audio_->LoadWave("Sounds/BGM/bgm.wav");
+	audio_->PlayWave(soundDataHandle_);
+	//
 	worldTransform_.Initialize();
 
 	viewProjection_.farZ = 1000;
@@ -145,7 +147,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	//model_->Draw(worldTransform_, viewProjection_, character);
-	//skydome_->Draw(viewProjection_);
+	skydome_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 	//enemy_->Draw(viewProjection_);
 	for (Enemy* enemy : enemies_) {

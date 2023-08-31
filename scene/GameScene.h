@@ -14,6 +14,7 @@
 #include"DebugCamera.h"
 #include "RailCamera.h"
 #include <sstream>
+#include "TimedCall.h"
 
 /// <summary>
 /// ゲームシーン

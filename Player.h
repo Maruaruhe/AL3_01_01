@@ -57,4 +57,6 @@ private:
 	const float kMoveLimitY = 17;
 
 	const float kRotSpeed = 0.02f;
+
+	int cooltime_;
 };

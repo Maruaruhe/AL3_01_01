@@ -2,7 +2,6 @@
 #include <Model.h>
 #include <WorldTransform.h>
 #include "EnemyBullet.h"
-#include "TimedCall.h"
 #include <list>
 
 class GameScene;
@@ -38,12 +37,9 @@ public:
 	void ChangeState(BaseEnemyState* newState);
 	void move(const Vector3& velocity);
 
-	//void Fire();
 	Vector3 SetPosition(const Vector3& position) { return position; }
 	Vector3 SetVelocity(const Vector3& velocity) { return velocity; }
 	WorldTransform GetTransform() { return worldTransform_; }
-
-	//void ResetTime();
 
 	Vector3 GetWorldPosition();
 
@@ -53,14 +49,10 @@ public:
 
 	void OnCollision();
 
-	//const std::list<EnemyBullet*>& GetBullets() const { return enemyBullets_; }
-
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 
 private:
 	GameScene* gameScene_ = nullptr;
-	//std::list<EnemyBullet*> bullets_;
-	//std::list<TimedCall*> timedCalls_;
 
 	WorldTransform worldTransform_;
 	Model* model_;
