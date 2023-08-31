@@ -24,8 +24,8 @@ GameScene::~GameScene() {
 
 void GameScene::Initialize() {
 	//sound
-	soundDataHandle_ = audio_->LoadWave("bgm.wav");
-	audio_->PlayWave(soundDataHandle_, true);
+	soundDataHandle_ = audio_->LoadWave("fanfare.wav");
+	audio_->PlayWave(soundDataHandle_);
 	//
 	character = TextureManager::Load("NineFox.png");
 	TextureManager::Load("reticle.png");
