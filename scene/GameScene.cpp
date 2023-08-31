@@ -23,9 +23,6 @@ GameScene::~GameScene() {
 }
 
 void GameScene::Initialize() {
-	//sound
-	soundDataHandle_ = audio_->LoadWave("fanfare.wav");
-	audio_->PlayWave(soundDataHandle_);
 	//
 	character = TextureManager::Load("NineFox.png");
 	TextureManager::Load("reticle.png");
@@ -33,6 +30,11 @@ void GameScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+
+		// sound
+	soundDataHandle_ = audio_->LoadWave("Sounds/BGM/bgm.wav");
+	audio_->PlayWave(soundDataHandle_);
+	//
 	worldTransform_.Initialize();
 
 	viewProjection_.farZ = 1000;

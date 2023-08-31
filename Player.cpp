@@ -38,6 +38,7 @@ void Player::Initialize(
 }
 
 void Player::Update(ViewProjection viewProjection) { 
+	cooltime_ -= 1;
 	bullets_.remove_if([] (Bullet * bullet) {
 		if (bullet->isDead()) {
 			delete bullet;
@@ -203,8 +204,9 @@ void Player::Attack() {
 	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
 		return;
 	}
-	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) {
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER && cooltime_<=0 ) {
 		//const float kBulletSpeed = 1.0f;
+		cooltime_ = 15;
 		Vector3 velocity =
 		    Subtract(worldTransform3DReticle_.translation_, worldTransform_.translation_);
 		velocity = Normalize(velocity);
