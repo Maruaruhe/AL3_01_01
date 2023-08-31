@@ -9,90 +9,31 @@ Enemy::Enemy() {
 	state = new EnemyStateApproach(); 
 }
 Enemy::~Enemy() { 
-	 /*for (EnemyBullet* bullet : bullets_) {
-		delete bullet;
-	}*/
 }
 void Enemy::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
 	model_ = Model::Create();
 	assert(model);
-	textureHandle_ = TextureManager::Load("Angel.png");
+	textureHandle_ = TextureManager::Load("Enemy.png");
 	model_ = model;
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 	velocity_ = velocity;
-	//ResetTime();
 }
 void Enemy::Update() {
-	//bullets_.remove_if([](EnemyBullet* bullet) {
-	//	if (bullet->isDead()) {
-	//		delete bullet;
-	//		return true;
-	//	}
-	//	return false;
-	//});
-
-	//timedCalls_.remove_if([](TimedCall* timedCall) {
-	//	if (timedCall->IsFinished()) {
-	//		delete timedCall;
-	//		return true;
-	//	}
-	//	return false;
-	//});
-
-	state->Update(this);
-	worldTransform_.UpdateMatrix();
-	worldTransform_.TransferMatrix();
-
-	//for (TimedCall* timedCall : timedCalls_) {
-	//	timedCall->Update();
-	//}
-
-	//for (EnemyBullet* bullet : bullets_) {
-	//	bullet->Update();
-	//}
-
+	if (!isDead_) {
+		state->Update(this);
+		worldTransform_.UpdateMatrix();
+		worldTransform_.TransferMatrix();
+	}
 }
 void Enemy::Draw(const ViewProjection& viewProjection) {
-	model_->Draw(worldTransform_, viewProjection, textureHandle_);
-	//for (EnemyBullet* bullet : bullets_) {
-	//	bullet->Draw(viewProjection);
-	//}
+	if (!isDead_) {
+		model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	}
 }
 void Enemy::move(const Vector3& velocity) {
 	worldTransform_.translation_ = Add(worldTransform_.translation_, velocity);
 }
-
-//void Enemy::Fire() {
-//	assert(player_);
-//	const float kBulletSpeed = 1.0f;
-//
-//
-//	/*Vector3 velocity(0, 0, kBulletSpeed);
-//	velocity = TransformNormal(velocity, worldTransform_.matWorld_);*/
-//	
-//	Vector3 distance = Subtract(GetWorldPosition(),player_->GetWorldPosition());
-//	Vector3 normalize = Normalize(distance);
-//	Vector3 velocity = {};
-//	velocity.x = -normalize.x;
-//	velocity.y = -normalize.y;
-//	velocity.z = -normalize.z;
-//
-//	EnemyBullet* newBullet = new EnemyBullet();
-//	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
-//
-//	bullets_.push_back(newBullet);
-//}
-//
-//void Enemy::ResetTime() { 
-//
-//	Fire();
-//
-//	std::function<void(void)> callback = std::bind(&Enemy::ResetTime, this);
-//	TimedCall* timedCall = new TimedCall(callback, 30);
-//	timedCalls_.push_back(timedCall);
-//
-//}
 
 void Enemy::ChangeState(BaseEnemyState* newState) { 
 	//delete state;
@@ -121,6 +62,6 @@ Vector3 Enemy::GetWorldPosition() {
 	return worldPosition;
 }
 
-void Enemy::OnCollision() {
-
+void Enemy::OnCollision() { 
+	isDead_ = true; 
 }

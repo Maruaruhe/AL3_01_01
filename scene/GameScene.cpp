@@ -24,16 +24,19 @@ GameScene::~GameScene() {
 
 void GameScene::Initialize() {
 	//
-	character = TextureManager::Load("NineFox.png");
+	character = TextureManager::Load("Player.png");
 	TextureManager::Load("reticle.png");
 
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+	shootAudio_ = Audio::GetInstance();
 
-		// sound
-	soundDataHandle_ = audio_->LoadWave("Sounds/BGM/bgm.wav");
-	audio_->PlayWave(soundDataHandle_);
+	// sound
+	BGM = audio_->LoadWave("Sounds/BGM/bgm.wav");
+	audio_->PlayWave(BGM,true);
+
+	shootSE = shootAudio_->LoadWave("Sounds/SE/shoot.wav");
 	//
 	worldTransform_.Initialize();
 
@@ -99,25 +102,6 @@ void GameScene::Update() {
 	}
 	CheckAllCollision();
 	skydome_->Update();
-
-	/*debugCamera_->Update();
-	#ifdef _DEBUG
-	if (input_->TriggerKey(DIK_R)) {
-		if (isDebugCameraActive == false) {
-			isDebugCameraActive = true;
-		} else {
-			isDebugCameraActive = false;
-		}
-	}
-	#endif
-	if (isDebugCameraActive) {
-		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-
-	    viewProjection_.TransferMatrix();
-	} else {
-		viewProjection_.UpdateMatrix();
-	}*/
 }
 
 void GameScene::Draw() {
@@ -147,7 +131,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	//model_->Draw(worldTransform_, viewProjection_, character);
-	//skydome_->Draw(viewProjection_);
+	skydome_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 	//enemy_->Draw(viewProjection_);
 	for (Enemy* enemy : enemies_) {
@@ -190,9 +174,10 @@ void GameScene::CheckAllCollision() {
 		posB = bullet->GetWorldPosition();
 
 		Vector3 distance = Subtract(posA, posB);
-		if (std::pow(distance.x, 2) + std::pow(distance.y, 2) + std::pow(distance.z, 2) <=3 * 3) {
+		if (std::pow(distance.x, 2) + std::pow(distance.y, 2) + std::pow(distance.z, 2) <=2 * 2) {
 			player_->OnCollision();
 			bullet->OnCollision();
+			shootAudio_->PlayWave(shootSE);
 		}
 	}
 	#pragma endregion
@@ -206,9 +191,10 @@ void GameScene::CheckAllCollision() {
 
 			Vector3 distance = Subtract(posA, posB);
 			if (std::pow(distance.x, 2) + std::pow(distance.y, 2) + std::pow(distance.z, 2) <=
-			    3 * 3) {
+			    2 * 2) {
 				enemy->OnCollision();
 				bullet->OnCollision();
+				shootAudio_->PlayWave(shootSE);
 			}
 	}
 	}
@@ -222,9 +208,10 @@ void GameScene::CheckAllCollision() {
 
 			Vector3 distance = Subtract(posA, posB);
 			if (std::pow(distance.x, 2) + std::pow(distance.y, 2) + std::pow(distance.z, 2) <=
-			    3 * 3) {
+			    2 * 2) {
 				playerBullet->OnCollision();
 				eBullet->OnCollision();
+				shootAudio_->PlayWave(shootSE);
 			}
 		}
 	}
@@ -237,19 +224,20 @@ void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
 
 void GameScene::Fire() {
 	assert(player_);
-	//const float kBulletSpeed = 1.0f;
 	for (Enemy* enemy : enemies_) {
-		Vector3 distance = Subtract(enemy->GetWorldPosition(), player_->GetWorldPosition());
-		Vector3 normalize = Normalize(distance);
-		Vector3 velocity = {};
-		velocity.x = -normalize.x;
-		velocity.y = -normalize.y;
-		velocity.z = -normalize.z;
+		if (!enemy->IsDead()) {
+			Vector3 distance = Subtract(enemy->GetWorldPosition(), player_->GetWorldPosition());
+			Vector3 normalize = Normalize(distance);
+			Vector3 velocity = {};
+			velocity.x = -normalize.x;
+			velocity.y = -normalize.y;
+			velocity.z = -normalize.z;
 
-		EnemyBullet* newBullet = new EnemyBullet();
-		newBullet->Initialize(model_, enemy->GetWorldPosition(), velocity);
+			EnemyBullet* newBullet = new EnemyBullet();
+			newBullet->Initialize(model_, enemy->GetWorldPosition(), velocity);
 
-		enemyBullets_.push_back(newBullet);
+			enemyBullets_.push_back(newBullet);
+		}
 	}
 }
 
@@ -258,7 +246,7 @@ void GameScene::ResetTime() {
 	Fire();
 
 	std::function<void(void)> callback = std::bind(&GameScene::ResetTime, this);
-	TimedCall* timedCall = new TimedCall(callback, 30);
+	TimedCall* timedCall = new TimedCall(callback, 60);
 	timedCalls_.push_back(timedCall);
 }
 

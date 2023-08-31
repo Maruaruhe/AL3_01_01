@@ -213,7 +213,7 @@ void Player::Attack() {
 		Bullet* newBullet = new Bullet();
 		newBullet->Initialize(model_, GetWorldPosition(), velocity);
 		bullets_.push_back(newBullet);
-	}
+	} 
 }
 
 Vector3 Player::GetWorldPosition() { 

@@ -94,7 +94,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// プリミティブ描画のリセット
 		primitiveDrawer->Reset();
 		// ImGui描画
-		imguiManager->Draw();
+		//imguiManager->Draw();
 		// 描画終了
 		dxCommon->PostDraw();
 	}

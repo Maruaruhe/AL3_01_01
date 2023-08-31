@@ -8,6 +8,7 @@
 #include "Bullet.h"
 #include <Sprite.h>
 #include <list>
+#include <Audio.h>
 
 class Player {
 public:
@@ -58,5 +59,5 @@ private:
 
 	const float kRotSpeed = 0.02f;
 
-	int cooltime_ = 15;
+	int cooltime_ = 5;
 };

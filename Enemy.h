@@ -49,7 +49,7 @@ public:
 
 	void SetPlayer(Player* player) { player_ = player; }
 
-	static const int kFireInterval = 60;
+	//static const int kFireInterval = 120;
 
 	void OnCollision();
 
@@ -57,10 +57,10 @@ public:
 
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 
+	bool IsDead() { return isDead_; }
+
 private:
 	GameScene* gameScene_ = nullptr;
-	//std::list<EnemyBullet*> bullets_;
-	//std::list<TimedCall*> timedCalls_;
 
 	WorldTransform worldTransform_;
 	Model* model_;
@@ -69,7 +69,7 @@ private:
 
 	BaseEnemyState* state;
 
-	int32_t fireTimer = 0;
-
 	Player* player_ = nullptr;
+
+	bool isDead_;
 };
