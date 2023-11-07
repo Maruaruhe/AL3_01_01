@@ -9,7 +9,7 @@ void RailCamera::Initialize(Vector3 translation, Vector3 rotation) {
 	
 void RailCamera::Update() {
 	//移動　回転
-	worldTransform_.translation_.z -= 0.0f;
+	//worldTransform_.translation_.z += 0.2f;
 	//ワールド行列再計算
 	worldTransform_.matWorld_ = MakeAffineMatrix(
 	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
@@ -18,8 +18,8 @@ void RailCamera::Update() {
 
 	//imgui
 	ImGui::Begin("Camera");
-	ImGui::SliderFloat3("translation", &worldTransform_.translation_.x, -30, 100);
-	ImGui::SliderFloat3("rotation", &worldTransform_.rotation_.x, -30, 100);
+	ImGui::SliderFloat3("translation", &worldTransform_.translation_.x, -3, 100);
+	ImGui::SliderFloat3("rotation", &worldTransform_.rotation_.x, 0, 6);
 	ImGui::End();
 
 }

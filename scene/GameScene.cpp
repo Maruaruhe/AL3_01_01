@@ -44,7 +44,7 @@ void GameScene::Initialize() {
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 
 	player_ = new Player();
-	player_->Initialize(model_, reticle_, character,{0,0,30});
+	player_->Initialize(model_, reticle_, character,{8,-5,15});
 
 	debugCamera_ = new DebugCamera(100, 50);
 	AxisIndicator::GetInstance()->SetVisible(true);

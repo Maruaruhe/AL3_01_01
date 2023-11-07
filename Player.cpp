@@ -37,7 +37,7 @@ void Player::Initialize(
 
 void Player::Update(ViewProjection viewProjection) { 
 	Vector3 move = {0, 0, 0};
-	const float kCharacterSpeed = 0.2f;
+	//const float kCharacterSpeed = 0.2f;
 	bullets_.remove_if([] (Bullet * bullet) {
 		if (bullet->isDead()) {
 			delete bullet;
@@ -45,7 +45,7 @@ void Player::Update(ViewProjection viewProjection) {
 		}
 		return false;
 	});
-	if (input_->PushKey(DIK_LEFT)) {
+	/*if (input_->PushKey(DIK_LEFT)) {
 		move.x -= kCharacterSpeed;
 	} else if (input_->PushKey(DIK_RIGHT)) {
 		move.x += kCharacterSpeed;
@@ -63,7 +63,7 @@ void Player::Update(ViewProjection viewProjection) {
 	}
 	else if(input_->PushKey(DIK_D)){
 		worldTransform_.rotation_.y += kRotSpeed;
-	}
+	}*/
 
 	worldTransform_.translation_.x += move.x;
 	worldTransform_.translation_.y += move.y;
