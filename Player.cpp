@@ -45,24 +45,16 @@ void Player::Update(ViewProjection viewProjection) {
 		}
 		return false;
 	});
-	if (input_->PushKey(DIK_LEFT)) {
+	if (input_->PushKey(DIK_A)) {
 		move.x -= kCharacterSpeed;
-	} else if (input_->PushKey(DIK_RIGHT)) {
+	} else if (input_->PushKey(DIK_D)) {
 		move.x += kCharacterSpeed;
 	}
 
-	if (input_->PushKey(DIK_UP)) {
+	if (input_->PushKey(DIK_W)) {
 		move.y += kCharacterSpeed;
-	} else if (input_->PushKey(DIK_DOWN)) {
+	} else if (input_->PushKey(DIK_S)) {
 		move.y -= kCharacterSpeed;
-	}
-
-	
-	if (input_->PushKey(DIK_A)){
-		worldTransform_.rotation_.y -= kRotSpeed;
-	}
-	else if(input_->PushKey(DIK_D)){
-		worldTransform_.rotation_.y += kRotSpeed;
 	}
 
 	worldTransform_.translation_.x += move.x;

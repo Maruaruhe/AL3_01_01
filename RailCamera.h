@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <WorldTransform.h>
 #include "ViewProjection.h"
-
+#include <Input.h>
 #include "Matrix.h"
 #include "ImGuiManager.h"
 
@@ -18,4 +18,5 @@ public:
 	private:
 	WorldTransform worldTransform_;
 	ViewProjection viewProjection_;
+	Input* input_;
 };
