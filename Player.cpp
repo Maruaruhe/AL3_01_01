@@ -52,9 +52,9 @@ void Player::Update(ViewProjection viewProjection) {
 	}
 
 	if (input_->PushKey(DIK_W)) {
-		move.y += kCharacterSpeed;
+		move.z += kCharacterSpeed;
 	} else if (input_->PushKey(DIK_S)) {
-		move.y -= kCharacterSpeed;
+		move.z -= kCharacterSpeed;
 	}
 
 	worldTransform_.translation_.x += move.x;

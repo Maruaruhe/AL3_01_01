@@ -153,9 +153,9 @@ void GameScene::Draw() {
 	for (Enemy* enemy : enemies_) {
 		enemy->Draw(viewProjection_);
 	}
-	for (EnemyBullet* bullet : enemyBullets_) {
+	/*for (EnemyBullet* bullet : enemyBullets_) {
 		bullet->Draw(viewProjection_);
-	}
+	}*/
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

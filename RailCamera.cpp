@@ -13,11 +13,11 @@ void RailCamera::Update() {
 	//移動　回転
 	worldTransform_.translation_.z -= 0.0f;
 
-	if (input_->PushKey(DIK_LEFT)) {
-		worldTransform_.rotation_.y -= 0.02f;
+	/*if (input_->PushKey(DIK_LEFT)) {
+		worldTransform_.rotation_.y -= 0.002f;
 	}
 	if (input_->PushKey(DIK_RIGHT)) {
-		worldTransform_.rotation_.y += 0.02f;
+		worldTransform_.rotation_.y += 0.002f;
 	}
 
 	if (input_->PushKey(DIK_UP)) {
@@ -26,7 +26,7 @@ void RailCamera::Update() {
 
 	if (input_->PushKey(DIK_DOWN)) {
 		worldTransform_.translation_.z -= 0.2f;
-	}
+	}*/
 
 	//ワールド行列再計算
 	worldTransform_.matWorld_ = MakeAffineMatrix(
@@ -37,7 +37,7 @@ void RailCamera::Update() {
 	//imgui
 	ImGui::Begin("Camera");
 	ImGui::SliderFloat3("translation", &worldTransform_.translation_.x, -30, 100);
-	ImGui::SliderFloat3("rotation", &worldTransform_.rotation_.x, -30, 100);
+	ImGui::SliderFloat3("rotation", &worldTransform_.rotation_.x, 0, 6);
 	ImGui::End();
 
 }
