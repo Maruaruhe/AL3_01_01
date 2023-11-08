@@ -31,7 +31,8 @@ void Player::Initialize(
 
 
 	worldTransform_.Initialize();
-	worldTransform_.translation_= Add(worldTransform_.rotation_, playerPosition);
+	//worldTransform_.translation_= Add(worldTransform_.rotation_, playerPosition);
+	worldTransform_.translation_= playerPosition;
 	worldTransform3DReticle_.Initialize();
 }
 
@@ -61,19 +62,14 @@ void Player::Update(ViewProjection viewProjection) {
 	worldTransform_.translation_.y += move.y;
 	worldTransform_.translation_.z += move.z;
 
-	float position[3] = {
-	    worldTransform_.translation_.x, worldTransform_.translation_.y,
-	    worldTransform_.translation_.z};
-
-
 	ImGui::Begin("space desu");
-
-	ImGui::SliderFloat3("Player", position, -30.0f, 30.0f);
+	ImGui::SliderFloat3("Playerworld", &worldTransform_.translation_.x, -30.0f, 30.0f);
+	ImGui::SliderFloat3("Playerscale", &worldTransform_.scale_.x, 0.0f, 10.0f);
 
 	ImGui::End();
 
-	worldTransform_.translation_.x = position[0];
-	worldTransform_.translation_.y = position[1];
+	//worldTransform_.translation_.x = position[0];
+	//worldTransform_.translation_.y = position[1];
 
 	worldTransform_.translation_.x = std::clamp(worldTransform_.translation_.x, -kMoveLimitX,kMoveLimitX);
 	worldTransform_.translation_.y = std::clamp(worldTransform_.translation_.y, -kMoveLimitY,kMoveLimitY);

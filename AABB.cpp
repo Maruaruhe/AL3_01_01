@@ -4,18 +4,21 @@
 
 AABB CreateAABB(WorldTransform worldTransform) {
 	AABB aabb{};
-	for (int i = 0; i < kMaxObject; i++) {
-		aabb.min = {1.0f * objectSize.num[0], 1.0f * objectSize.num[1], -1.0f * objectSize.num[2]};
-		aabb.max = {-1.0f * objectSize.num[0], -1.0f * objectSize.num[1], 1.0f * objectSize.num[2]};
+	aabb.min = {
+	    -1.0f * worldTransform.scale_.x, -1.0f * worldTransform.scale_.y,
+	    -1.0f * worldTransform.scale_.z};
+	aabb.max = {
+	    1.0f * worldTransform.scale_.x, 1.0f * worldTransform.scale_.y,
+	    1.0f * worldTransform.scale_.z};
 
-		aabb.min.num[0] += a.num[0];
-		aabb.min.num[1] += a.num[1];
-		aabb.min.num[2] += a.num[2];
+	aabb.min.x += worldTransform.translation_.x;
+	aabb.min.y += worldTransform.translation_.y;
+	aabb.min.z += worldTransform.translation_.z;
 
-		aabb.max.num[0] += a.num[0];
-		aabb.max.num[1] += a.num[1];
-		aabb.max.num[2] += a.num[2];
-	}
+	aabb.max.x += worldTransform.translation_.x;
+	aabb.max.y += worldTransform.translation_.y;
+	aabb.max.z += worldTransform.translation_.z;
+
 	return aabb;
 }
 

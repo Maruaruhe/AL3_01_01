@@ -3,6 +3,7 @@
 #include <cassert>
 #include "AxisIndicator.h"
 #include <fstream>
+#include "AABB.h"
 
 GameScene::GameScene() {
 }
@@ -58,7 +59,7 @@ void GameScene::Initialize() {
 	railCamera_ = new RailCamera();
 	railCamera_->Initialize({0, 0, 0}, {0, 0, 0});
 
-	player_->SetParent(&railCamera_->GetWorldTransform());
+	//player_->SetParent(&railCamera_->GetWorldTransform());
 }
 
 void GameScene::Update() { 
@@ -153,9 +154,9 @@ void GameScene::Draw() {
 	for (Enemy* enemy : enemies_) {
 		enemy->Draw(viewProjection_);
 	}
-	/*for (EnemyBullet* bullet : enemyBullets_) {
+	for (EnemyBullet* bullet : enemyBullets_) {
 		bullet->Draw(viewProjection_);
-	}*/
+	}
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
@@ -184,13 +185,14 @@ void GameScene::CheckAllCollision() {
 
 	#pragma region 自キャラと敵弾の当たり判定
 	posA = player_->GetWorldPosition();
+	//posA = player_->GiveWorld().translation_;
 
 	for (EnemyBullet* bullet : eBullets_) {
 		posB = bullet->GetWorldPosition();
 
 		Vector3 distance = Subtract(posA, posB);
 		if (std::pow(distance.x, 2) + std::pow(distance.y, 2) + std::pow(distance.z, 2) <=3 * 3) {
-			player_->OnCollision();
+			//player_->OnCollision();
 			bullet->OnCollision();
 		}
 	}
@@ -228,6 +230,19 @@ void GameScene::CheckAllCollision() {
 		}
 	}
 	#pragma endregion
+
+    #pragma region 自と敵の当たり判定
+	posA = player_->GetWorldPosition();
+	for (Enemy* enemy : enemies_) {
+		posB = enemy->GetWorldPosition();
+		AABB a = CreateAABB(player_->GiveWorld());
+		AABB b = CreateAABB(enemy->GiveWorld());
+		if (IsCollision(a, b)) {
+
+		}
+	}
+	#pragma endregion
+
 }
 
 void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) { 

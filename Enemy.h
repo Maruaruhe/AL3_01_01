@@ -57,6 +57,8 @@ public:
 
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 
+	WorldTransform GiveWorld() { return worldTransform_; }
+
 private:
 	GameScene* gameScene_ = nullptr;
 	//std::list<EnemyBullet*> bullets_;

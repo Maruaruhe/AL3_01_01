@@ -30,6 +30,8 @@ public:
 
 	void SetParent(const WorldTransform* parent);
 
+	WorldTransform GiveWorld() { return worldTransform_; }
+
 	void DrawUI();
 
 private:
