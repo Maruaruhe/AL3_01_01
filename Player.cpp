@@ -48,46 +48,40 @@ void Player::Update(ViewProjection viewProjection) {
 	});
 	//move
 	if (input_->PushKey(DIK_A)) {
-		if (!isCollision) {
-			move.x -= kCharacterSpeed;
-		} else {
+		move.x -= kCharacterSpeed;
+		if (isCollision) {
 			move.x += kCharacterSpeed;
 		}
 	}
 	if (input_->PushKey(DIK_D)) {
-		if (!isCollision) {
-			move.x += kCharacterSpeed;
-		} else {
+		move.x += kCharacterSpeed;
+		if (isCollision){
 			move.x -= kCharacterSpeed;
 		}
 	}
 
 	if (input_->PushKey(DIK_E)) {
-		if (!isCollision) {
 			move.z += kCharacterSpeed;
-		} else {
+		if (isCollision) {
 			move.z -= kCharacterSpeed;
 		}
 	}
 	if (input_->PushKey(DIK_Q)) {
-		if (!isCollision) {
 			move.z -= kCharacterSpeed;
-		} else {
+		if (isCollision) {
 			move.z += kCharacterSpeed;
 		}
 	}
 
 	if (input_->PushKey(DIK_W)) {
-		if (!isCollision) {
 			move.y += kCharacterSpeed;
-		} else {
+		if (isCollision) {
 			move.y -= kCharacterSpeed;
 		}
 	}
 	if (input_->PushKey(DIK_S)) {
-		if (!isCollision) {
 			move.y -= kCharacterSpeed;
-		} else {
+		if (isCollision) {
 			move.y += kCharacterSpeed;
 		}
 	}
