@@ -26,6 +26,8 @@ public:
 
 	void OnCollision();
 
+	bool SetOnCollision(bool a) { return isCollision = a; }
+
 	const std::list<Bullet*>& GetBullets() const { return bullets_; }
 
 	void SetParent(const WorldTransform* parent);
@@ -50,6 +52,8 @@ private:
 	uint32_t textureHandle_ = 0u;
 
 	float inputFloat3[3] = {0, 0, 0};
+
+	bool isCollision = false;
 
 	const float kMoveLimitX = 34;
 	const float kMoveLimitY = 17;

@@ -46,16 +46,50 @@ void Player::Update(ViewProjection viewProjection) {
 		}
 		return false;
 	});
+	//move
 	if (input_->PushKey(DIK_A)) {
-		move.x -= kCharacterSpeed;
-	} else if (input_->PushKey(DIK_D)) {
-		move.x += kCharacterSpeed;
+		if (!isCollision) {
+			move.x -= kCharacterSpeed;
+		} else {
+			move.x += kCharacterSpeed;
+		}
+	}
+	if (input_->PushKey(DIK_D)) {
+		if (!isCollision) {
+			move.x += kCharacterSpeed;
+		} else {
+			move.x -= kCharacterSpeed;
+		}
+	}
+
+	if (input_->PushKey(DIK_E)) {
+		if (!isCollision) {
+			move.z += kCharacterSpeed;
+		} else {
+			move.z -= kCharacterSpeed;
+		}
+	}
+	if (input_->PushKey(DIK_Q)) {
+		if (!isCollision) {
+			move.z -= kCharacterSpeed;
+		} else {
+			move.z += kCharacterSpeed;
+		}
 	}
 
 	if (input_->PushKey(DIK_W)) {
-		move.z += kCharacterSpeed;
-	} else if (input_->PushKey(DIK_S)) {
-		move.z -= kCharacterSpeed;
+		if (!isCollision) {
+			move.y += kCharacterSpeed;
+		} else {
+			move.y -= kCharacterSpeed;
+		}
+	}
+	if (input_->PushKey(DIK_S)) {
+		if (!isCollision) {
+			move.y -= kCharacterSpeed;
+		} else {
+			move.y += kCharacterSpeed;
+		}
 	}
 
 	worldTransform_.translation_.x += move.x;
@@ -105,6 +139,7 @@ void Player::Update(ViewProjection viewProjection) {
 
 
 	 Attack();
+	 OnCollision();
 
 	 for (Bullet* bullet : bullets_) {
 		bullet->Update();
@@ -145,7 +180,11 @@ Vector3 Player::GetWorldPosition() {
 	}
 
 void Player::OnCollision() {
-
+	if (isCollision){
+		ImGui::SliderFloat3("Playerrotation", &worldTransform_.rotation_.x, 0.0f, 10.0f);
+	} else {
+	
+	}
 }
 
 void Player::SetParent(const WorldTransform* parent) { 

@@ -154,9 +154,9 @@ void GameScene::Draw() {
 	for (Enemy* enemy : enemies_) {
 		enemy->Draw(viewProjection_);
 	}
-	for (EnemyBullet* bullet : enemyBullets_) {
+	/*for (EnemyBullet* bullet : enemyBullets_) {
 		bullet->Draw(viewProjection_);
-	}
+	}*/
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
@@ -238,7 +238,10 @@ void GameScene::CheckAllCollision() {
 		AABB a = CreateAABB(player_->GiveWorld());
 		AABB b = CreateAABB(enemy->GiveWorld());
 		if (IsCollision(a, b)) {
-
+			player_->SetOnCollision(true);
+			break;
+		} else {
+			player_->SetOnCollision(false);
 		}
 	}
 	#pragma endregion
