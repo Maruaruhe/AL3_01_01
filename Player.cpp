@@ -50,41 +50,23 @@ void Player::Update(ViewProjection viewProjection) {
 	//move
 	if (input_->PushKey(DIK_A)) {
 		move.x -= kCharacterSpeed;
-	/*	if (isCollision && direction_.left) {
-			move.x += kCharacterSpeed;
-		}*/
 	}
 	if (input_->PushKey(DIK_D)) {
 		move.x += kCharacterSpeed;
-		/*if (isCollision && direction_.right) {
-			move.x -= kCharacterSpeed;
-		}*/
 	}
 
 	if (input_->PushKey(DIK_E)) {
 		move.z += kCharacterSpeed;
-		/*if (isCollision && direction_.front) {
-			move.z -= kCharacterSpeed;
-		}*/
 	}
 	if (input_->PushKey(DIK_Q)) {
 		move.z -= kCharacterSpeed;
-		/*if (isCollision && direction_.back) {
-			move.z += kCharacterSpeed;
-		}*/
 	}
 
 	if (input_->PushKey(DIK_W)) {
 		move.y += kCharacterSpeed;
-		/*if (isCollision && direction_.bot) {
-			move.y -= kCharacterSpeed;
-		}*/
 	}
 	if (input_->PushKey(DIK_S)) {
 		move.y -= kCharacterSpeed;
-		/*if (isCollision && direction_.top) {
-			move.y += kCharacterSpeed;
-		}*/
 	}
 
 	worldTransform_.translation_.x += move.x;

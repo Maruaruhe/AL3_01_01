@@ -33,12 +33,12 @@ bool IsCollision(const AABB& a, const AABB& b) {
 Direction CheckDirection(const AABB& a, const AABB& b) { 
 	Direction direction{};
 	//
-	if (a.min.x >= b.min.x) {
+	if (a.min.x >= b.max.x) {
 		direction.left = true;
 
 		direction.right = false;
 	}
-	if (a.max.x <= b.max.x) {
+	if (a.max.x <= b.min.x) {
 		direction.right = true;
 
 		direction.left = false;
@@ -49,18 +49,18 @@ Direction CheckDirection(const AABB& a, const AABB& b) {
 
 		direction.front = false;
 	}
-	if (a.max.z <= b.max.z) {
+	if (a.max.z <= b.min.z) {
 		direction.front = true;
 
 		direction.back = false;
 	}
 	//縦
-	if (a.min.y >= b.min.y) {
+	if (a.min.y >= b.max.y) {
 		direction.top = true;
 
 		direction.bot = false;
 	}
-	if (a.max.y <= b.max.y) {
+	if (a.max.y <= b.min.y) {
 		direction.bot = true;
 
 		direction.top = false;

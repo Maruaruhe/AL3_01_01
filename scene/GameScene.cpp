@@ -99,6 +99,7 @@ void GameScene::Update() {
 		bullet->Update();
 	}
 	CheckAllCollision();
+	player_->GiveWorld().UpdateMatrix();
 	skydome_->Update();
 
 	/*debugCamera_->Update();
@@ -276,7 +277,6 @@ void GameScene::CheckAllCollision() {
 				player_->SetPosition({posA.x, posA.y - distance, posA.z});
 				break;
 			}
-
 			break;
 		} else {
 			player_->SetOnCollision(false);
