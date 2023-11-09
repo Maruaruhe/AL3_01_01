@@ -8,6 +8,7 @@
 #include "Bullet.h"
 #include <Sprite.h>
 #include <list>
+#include "AABB.h"
 
 class Player {
 public:
@@ -31,13 +32,18 @@ public:
 	const std::list<Bullet*>& GetBullets() const { return bullets_; }
 
 	void SetParent(const WorldTransform* parent);
+	void SetDirection(Direction direction) { direction_ = direction; }
 
 	WorldTransform GiveWorld() { return worldTransform_; }
+	WorldTransform GivePreWorld() { return worldTransform_; }
+	void SetPosition(Vector3 worldtransform) { worldTransform_.translation_ = worldtransform; }
 
 	void DrawUI();
 
 private:
 	WorldTransform worldTransform_;
+	WorldTransform preWorldTransform_;
+	Direction direction_;
 
 	WorldTransform worldTransform3DReticle_;
 

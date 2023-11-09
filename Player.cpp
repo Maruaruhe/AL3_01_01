@@ -46,44 +46,45 @@ void Player::Update(ViewProjection viewProjection) {
 		}
 		return false;
 	});
+	preWorldTransform_ = worldTransform_;
 	//move
 	if (input_->PushKey(DIK_A)) {
 		move.x -= kCharacterSpeed;
-		if (isCollision) {
+	/*	if (isCollision && direction_.left) {
 			move.x += kCharacterSpeed;
-		}
+		}*/
 	}
 	if (input_->PushKey(DIK_D)) {
 		move.x += kCharacterSpeed;
-		if (isCollision){
+		/*if (isCollision && direction_.right) {
 			move.x -= kCharacterSpeed;
-		}
+		}*/
 	}
 
 	if (input_->PushKey(DIK_E)) {
-			move.z += kCharacterSpeed;
-		if (isCollision) {
+		move.z += kCharacterSpeed;
+		/*if (isCollision && direction_.front) {
 			move.z -= kCharacterSpeed;
-		}
+		}*/
 	}
 	if (input_->PushKey(DIK_Q)) {
-			move.z -= kCharacterSpeed;
-		if (isCollision) {
+		move.z -= kCharacterSpeed;
+		/*if (isCollision && direction_.back) {
 			move.z += kCharacterSpeed;
-		}
+		}*/
 	}
 
 	if (input_->PushKey(DIK_W)) {
-			move.y += kCharacterSpeed;
-		if (isCollision) {
+		move.y += kCharacterSpeed;
+		/*if (isCollision && direction_.bot) {
 			move.y -= kCharacterSpeed;
-		}
+		}*/
 	}
 	if (input_->PushKey(DIK_S)) {
-			move.y -= kCharacterSpeed;
-		if (isCollision) {
+		move.y -= kCharacterSpeed;
+		/*if (isCollision && direction_.top) {
 			move.y += kCharacterSpeed;
-		}
+		}*/
 	}
 
 	worldTransform_.translation_.x += move.x;
@@ -93,11 +94,16 @@ void Player::Update(ViewProjection viewProjection) {
 	ImGui::Begin("space desu");
 	ImGui::SliderFloat3("Playerworld", &worldTransform_.translation_.x, -30.0f, 30.0f);
 	ImGui::SliderFloat3("Playerscale", &worldTransform_.scale_.x, 0.0f, 10.0f);
+	ImGui::Text("direction right = %d", direction_.right);
+	ImGui::Text("direction left = %d", direction_.left);
+	ImGui::Text("direction front = %d", direction_.front);
+	ImGui::Text("direction back = %d", direction_.back);
+	ImGui::Text("direction top = %d", direction_.top);
+	ImGui::Text("direction bot = %d", direction_.bot);
+	ImGui::Text("x = %f", worldTransform_.translation_.x);
+	//ImGui::Text("direction bot = %d", direction_.bot);
 
 	ImGui::End();
-
-	//worldTransform_.translation_.x = position[0];
-	//worldTransform_.translation_.y = position[1];
 
 	worldTransform_.translation_.x = std::clamp(worldTransform_.translation_.x, -kMoveLimitX,kMoveLimitX);
 	worldTransform_.translation_.y = std::clamp(worldTransform_.translation_.y, -kMoveLimitY,kMoveLimitY);

@@ -237,8 +237,46 @@ void GameScene::CheckAllCollision() {
 		posB = enemy->GetWorldPosition();
 		AABB a = CreateAABB(player_->GiveWorld());
 		AABB b = CreateAABB(enemy->GiveWorld());
+		Direction direction = CheckDirection(a, b);
+		player_->SetDirection(direction);
 		if (IsCollision(a, b)) {
 			player_->SetOnCollision(true);
+			//
+			if (input_->PushKey(DIK_A)) {
+				float distance = a.min.x - b.max.x;
+				player_->SetPosition({posA.x - distance, posA.y, posA.z});
+				break;
+			}
+			else if (input_->PushKey(DIK_D)) {
+				float distance = a.max.x - b.min.x;
+				player_->SetPosition({posA.x - distance, posA.y, posA.z});
+				break;
+			}
+
+			//
+			else if (input_->PushKey(DIK_Q)) {
+				float distance = a.min.z - b.max.z;
+				player_->SetPosition({posA.x, posA.y, posA.z - distance});
+				break;
+			}
+			else if (input_->PushKey(DIK_E)) {
+				float distance = a.max.z - b.min.z;
+				player_->SetPosition({posA.x, posA.y, posA.z - distance});
+				break;
+			}
+
+			//
+			else if (input_->PushKey(DIK_S)) {
+				float distance = a.min.y - b.max.y;
+				player_->SetPosition({posA.x, posA.y - distance, posA.z});
+				break;
+			}
+			else if (input_->PushKey(DIK_W)) {
+				float distance = a.max.y - b.min.y;
+				player_->SetPosition({posA.x, posA.y - distance, posA.z});
+				break;
+			}
+
 			break;
 		} else {
 			player_->SetOnCollision(false);

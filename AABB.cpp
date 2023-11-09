@@ -23,9 +23,47 @@ AABB CreateAABB(WorldTransform worldTransform) {
 }
 
 bool IsCollision(const AABB& a, const AABB& b) {
-	if ((a.min.x <= b.max.x && a.max.x >= b.min.x) && (a.min.y <= b.max.y && a.max.y >= b.min.y) &&
-	    (a.min.z <= b.max.z && a.max.z >= b.min.z)) {
+	if ((a.min.x < b.max.x && a.max.x > b.min.x) && (a.min.y < b.max.y && a.max.y > b.min.y) &&
+	    (a.min.z < b.max.z && a.max.z > b.min.z)) {
 		return true;
 	}
 	return false;
+}
+
+Direction CheckDirection(const AABB& a, const AABB& b) { 
+	Direction direction{};
+	//
+	if (a.min.x >= b.min.x) {
+		direction.left = true;
+
+		direction.right = false;
+	}
+	if (a.max.x <= b.max.x) {
+		direction.right = true;
+
+		direction.left = false;
+	}
+	//
+	if (a.min.z >= b.min.z) {
+		direction.back = true;
+
+		direction.front = false;
+	}
+	if (a.max.z <= b.max.z) {
+		direction.front = true;
+
+		direction.back = false;
+	}
+	//縦
+	if (a.min.y >= b.min.y) {
+		direction.top = true;
+
+		direction.bot = false;
+	}
+	if (a.max.y <= b.max.y) {
+		direction.bot = true;
+
+		direction.top = false;
+	}
+	return direction;
 }
