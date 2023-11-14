@@ -242,40 +242,46 @@ void GameScene::CheckAllCollision() {
 		player_->SetDirection(direction);
 		if (IsCollision(a, b)) {
 			player_->SetOnCollision(true);
-			//
+			//x軸
 			if (input_->PushKey(DIK_A)) {
 				float distance = a.min.x - b.max.x;
-				player_->SetPosition({posA.x - distance, posA.y, posA.z});
-				break;
+				if (player_->GetVelocity().x >= -distance) {
+					player_->SetPosition({posA.x - distance, posA.y, posA.z});
+				}
 			}
-			else if (input_->PushKey(DIK_D)) {
+			if (input_->PushKey(DIK_D)) {
 				float distance = a.max.x - b.min.x;
-				player_->SetPosition({posA.x - distance, posA.y, posA.z});
-				break;
+				if (player_->GetVelocity().x >= distance) {
+					player_->SetPosition({posA.x - distance, posA.y, posA.z});
+				}
 			}
 
-			//
-			else if (input_->PushKey(DIK_Q)) {
+			//z軸
+			if (input_->PushKey(DIK_Q)) {
 				float distance = a.min.z - b.max.z;
-				player_->SetPosition({posA.x, posA.y, posA.z - distance});
-				break;
+				if (player_->GetVelocity().z >= -distance) {
+					player_->SetPosition({posA.x, posA.y, posA.z - distance});
+				}
 			}
-			else if (input_->PushKey(DIK_E)) {
+			if (input_->PushKey(DIK_E)) {
 				float distance = a.max.z - b.min.z;
-				player_->SetPosition({posA.x, posA.y, posA.z - distance});
-				break;
+				if (player_->GetVelocity().z >= distance) {
+					player_->SetPosition({posA.x, posA.y, posA.z - distance});
+				}
 			}
 
-			//
-			else if (input_->PushKey(DIK_S)) {
+			//y軸
+			if (input_->PushKey(DIK_S)) {
 				float distance = a.min.y - b.max.y;
-				player_->SetPosition({posA.x, posA.y - distance, posA.z});
-				break;
+				if (player_->GetVelocity().y >= -distance) {
+					player_->SetPosition({posA.x, posA.y - distance, posA.z});
+				}
 			}
-			else if (input_->PushKey(DIK_W)) {
+			if (input_->PushKey(DIK_W)) {
 				float distance = a.max.y - b.min.y;
-				player_->SetPosition({posA.x, posA.y - distance, posA.z});
-				break;
+				if (player_->GetVelocity().y >= distance) {
+					player_->SetPosition({posA.x, posA.y - distance, posA.z});
+				}
 			}
 			break;
 		} else {

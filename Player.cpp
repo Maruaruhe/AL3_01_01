@@ -38,7 +38,6 @@ void Player::Initialize(
 
 void Player::Update(ViewProjection viewProjection) { 
 	Vector3 move = {0, 0, 0};
-	const float kCharacterSpeed = 0.2f;
 	bullets_.remove_if([] (Bullet * bullet) {
 		if (bullet->isDead()) {
 			delete bullet;
@@ -49,24 +48,24 @@ void Player::Update(ViewProjection viewProjection) {
 	preWorldTransform_ = worldTransform_;
 	//move
 	if (input_->PushKey(DIK_A)) {
-		move.x -= kCharacterSpeed;
+		move.x -= velocity.x;
 	}
 	if (input_->PushKey(DIK_D)) {
-		move.x += kCharacterSpeed;
+		move.x += velocity.x;
 	}
 
 	if (input_->PushKey(DIK_E)) {
-		move.z += kCharacterSpeed;
+		move.z += velocity.z;
 	}
 	if (input_->PushKey(DIK_Q)) {
-		move.z -= kCharacterSpeed;
+		move.z -= velocity.z;
 	}
 
 	if (input_->PushKey(DIK_W)) {
-		move.y += kCharacterSpeed;
+		move.y += velocity.y;
 	}
 	if (input_->PushKey(DIK_S)) {
-		move.y -= kCharacterSpeed;
+		move.y -= velocity.y;
 	}
 
 	worldTransform_.translation_.x += move.x;
@@ -141,11 +140,11 @@ void Player::Attack() {
 		//const float kBulletSpeed = 1.0f;
 		/*Vector3 velocity(0, 0, kBulletSpeed);
 		velocity = TransformNormal(velocity, worldTransform_.matWorld_);*/
-		Vector3 velocity = Subtract(worldTransform3DReticle_.translation_, worldTransform_.translation_);
-		velocity = Normalize(velocity);
+		Vector3 bulletSpeed = Subtract(worldTransform3DReticle_.translation_, worldTransform_.translation_);
+		bulletSpeed = Normalize(bulletSpeed);
 		Bullet* newBullet = new Bullet();
 		//newBullet->Initialize(model_, worldTransform_.translation_,velocity);
-		newBullet->Initialize(model_, GetWorldPosition(), velocity);
+		newBullet->Initialize(model_, GetWorldPosition(), bulletSpeed);
 
 		bullets_.push_back(newBullet);
 	}
