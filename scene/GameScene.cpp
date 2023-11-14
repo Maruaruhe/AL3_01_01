@@ -15,6 +15,9 @@ GameScene::~GameScene() {
 	delete player_;
 	delete debugCamera_;
 	//delete enemy_;
+	for (Enemy* enemy : enemies_) {
+		delete enemy;
+	}
 	for (Enemy* enemy : zWall) {
 		delete enemy;
 	}
@@ -57,6 +60,7 @@ void GameScene::Initialize() {
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 	//LoadEnemyPopDate("./Resources/enemyPop.csv");
+	UpdateEnemyPopCommands("./Resources/enemyPop/enemyPop.csv",&enemies_);
 	UpdateEnemyPopCommands("./Resources/enemyPop/zWall.csv",&zWall);
 	UpdateEnemyPopCommands("./Resources/enemyPop/xWall.csv",&xWall);
 	UpdateEnemyPopCommands("./Resources/enemyPop/floor.csv",&floorEnemies_);
@@ -98,6 +102,10 @@ void GameScene::Update() {
 	//enemy_->Update();
 	//LoadEnemyPopDate("./Resources/enemyPop.csv");
 	//UpdateEnemyPopCommands();
+	for (Enemy* enemy : zWall) {
+		enemy->Update();
+	}
+
 	for (Enemy* enemy : zWall) {
 		enemy->Update();
 	}
@@ -307,8 +315,31 @@ void GameScene::CheckAllCollision() {
 		}
 	}
 
-	if (player_->GetVelocity().x >= fabs(distance.x) || player_->GetVelocity().z >= fabs(distance.z)) {
-		player_->SetPosition({posA.x - distance.x, posA.y, posA.z - distance.z});
+	// z
+	for (Enemy* enemy : floorEnemies_) {
+		AABB a = CreateAABB(player_->GiveWorld());
+		AABB b = CreateAABB(enemy->GiveWorld());
+
+		if (IsCollision(a, b)) {
+			player_->SetOnCollision(true);
+
+			// z軸
+			if (input_->PushKey(DIK_S)) {
+				distance.y = a.min.y - b.max.y;
+			}
+			if (input_->PushKey(DIK_W)) {
+				distance.y = a.max.y - b.min.y;
+			}
+		} else {
+			player_->SetOnCollision(false);
+		}
+	}
+
+
+	if (player_->GetVelocity().x >= fabs(distance.x) ||
+	    player_->GetVelocity().y >= fabs(distance.y) ||
+	    player_->GetVelocity().z >= fabs(distance.z)) {
+		player_->SetPosition({posA.x - distance.x, posA.y - distance.y, posA.z - distance.z});
 	}
 	#pragma endregion
 

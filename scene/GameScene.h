@@ -79,6 +79,7 @@ private: // メンバ変数
 	Player* player_ = nullptr;
 	//Enemy* enemy_ = nullptr;
 
+	std::list<Enemy*> enemies_;
 	std::list<Enemy*> zWall;
 	std::list<Enemy*> floorEnemies_;
 	std::list<Enemy*> zWallEnemies_;
