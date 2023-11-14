@@ -50,7 +50,8 @@ void GameScene::Initialize() {
 	debugCamera_ = new DebugCamera(100, 50);
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
-	LoadEnemyPopDate();
+	//LoadEnemyPopDate("./Resources/enemyPop.csv");
+	UpdateEnemyPopCommands("./Resources/enemyPop.csv",&enemies_);
 	ResetTime();
 
 	skydome_ = new Skydome();
@@ -87,7 +88,8 @@ void GameScene::Update() {
 		return false;
 	});
 	//enemy_->Update();
-	UpdateEnemyPopCommands();
+	//LoadEnemyPopDate("./Resources/enemyPop.csv");
+	//UpdateEnemyPopCommands();
 	for (Enemy* enemy : enemies_) {
 		enemy->Update();
 	}
@@ -298,10 +300,6 @@ void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
 
 void GameScene::Fire() {
 	assert(player_);
-	//const float kBulletSpeed = 1.0f;
-
-	/*Vector3 velocity(0, 0, kBulletSpeed);
-	velocity = TransformNormal(velocity, worldTransform_.matWorld_);*/
 	for (Enemy* enemy : enemies_) {
 		Vector3 distance = Subtract(enemy->GetWorldPosition(), player_->GetWorldPosition());
 		Vector3 normalize = Normalize(distance);
@@ -326,19 +324,23 @@ void GameScene::ResetTime() {
 	timedCalls_.push_back(timedCall);
 }
 
-void GameScene::LoadEnemyPopDate() { 
+std::stringstream GameScene::LoadEnemyPopDate(const std::string& directoryPath) { 
 
 	std::ifstream file;
-	file.open("./Resources/enemyPop.csv");
+	file.open(directoryPath);
 	assert(file.is_open());
 
+	std::stringstream enemyPopCommands;
 	enemyPopCommands << file.rdbuf();
 
 	file.close();
+	return enemyPopCommands;
 }
 
-void GameScene::UpdateEnemyPopCommands() { 
+void GameScene::UpdateEnemyPopCommands(const std::string& filename, std::list<Enemy*>* enemies) { 
+
 	std::string line;
+	std::stringstream enemyPopCommands = LoadEnemyPopDate(filename);
 	while (getline(enemyPopCommands, line)) {
 		std::istringstream line_stream(line);
 		std::string word;
@@ -356,16 +358,24 @@ void GameScene::UpdateEnemyPopCommands() {
 			getline(line_stream, word, ',');
 			float z = (float)std::atof(word.c_str());
 
-			spawnEnemy(Vector3(x, y, z));
-			break;
+			getline(line_stream, word, ',');
+			float sx = (float)std::atof(word.c_str());
+
+			getline(line_stream, word, ',');
+			float sy = (float)std::atof(word.c_str());
+
+			getline(line_stream, word, ',');
+			float sz = (float)std::atof(word.c_str());
+
+			spawnEnemy(Vector3(x, y, z), Vector3(sx, sy, sz), enemies);
+			//break;
 		}
 	}
 }
 
-void GameScene::spawnEnemy(Vector3 pos) {
+void GameScene::spawnEnemy(Vector3 pos, Vector3 scale, std::list<Enemy*>* enemies) {
 	Enemy* newEnemy = new Enemy();
-	newEnemy->SetPlayer(player_);
-	newEnemy->Initialize(model_, {pos.x, pos.y, pos.z}, {0.0f, 0.0f, 0.0f});
+	newEnemy->Initialize(model_, {pos.x, pos.y, pos.z}, scale);
 	newEnemy->SetGameScene(this);
-	enemies_.push_back(newEnemy);
+	enemies->push_back(newEnemy);
 }

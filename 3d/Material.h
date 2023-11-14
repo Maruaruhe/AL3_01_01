@@ -19,7 +19,8 @@ public: // サブクラス
 		float pad2;       // パディング
 		Vector3 specular; // スペキュラー係数
 		float alpha;      // アルファ
-		Vector3 uvScale;  // UVスケール
+		Vector3 uv
+			;  // UVスケール
 		Vector3 uvOffset; // UVオフセット
 	};
 

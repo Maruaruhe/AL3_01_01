@@ -61,10 +61,10 @@ public: // メンバ関数
 	void Fire();
 	void ResetTime();
 
-	void LoadEnemyPopDate();
-	void UpdateEnemyPopCommands();
+	std::stringstream LoadEnemyPopDate(const std::string& filename);
+	void UpdateEnemyPopCommands(const std::string& filename, std::list<Enemy*>* enemies);
 
-	void spawnEnemy(Vector3 pos);
+	void spawnEnemy(Vector3 pos, Vector3 scale, std::list<Enemy*>* enemies);
 
 
 private: // メンバ変数
@@ -79,6 +79,9 @@ private: // メンバ変数
 	//Enemy* enemy_ = nullptr;
 
 	std::list<Enemy*> enemies_;
+	std::list<Enemy*> floorEnemies_;
+	std::list<Enemy*> zWallEnemies_;
+	std::list<Enemy*> xWallEnemies_;
 
 	Model* modelSkydome_ = nullptr;
 	Skydome* skydome_ = nullptr;
@@ -97,7 +100,7 @@ private: // メンバ変数
 	std::list<EnemyBullet*> enemyBullets_;
 	std::list<TimedCall*> timedCalls_;
 
-	std::stringstream enemyPopCommands;
+	//std::stringstream enemyPopCommands;
 
 	/// <summary>
 	/// ゲームシーン用

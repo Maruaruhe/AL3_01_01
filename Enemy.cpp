@@ -10,14 +10,15 @@ Enemy::Enemy() {
 }
 Enemy::~Enemy() { 
 }
-void Enemy::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
+void Enemy::Initialize(Model* model, const Vector3& position, const Vector3& scale) {
 	model_ = Model::Create();
 	assert(model);
 	textureHandle_ = TextureManager::Load("Angel.png");
 	model_ = model;
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
-	velocity_ = velocity;
+	worldTransform_.scale_ = scale;
+	velocity_ = {};
 }
 void Enemy::Update() {state->Update(this);
 	worldTransform_.UpdateMatrix();

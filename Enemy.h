@@ -31,7 +31,7 @@ public:
 	Enemy();
 	~Enemy();
 
-	void Initialize(Model* model, const Vector3& position, const Vector3& velocity);
+	void Initialize(Model* model, const Vector3& position, const Vector3& scale);
 	void Update();
 	void Draw(const ViewProjection& viewProjection);
 
