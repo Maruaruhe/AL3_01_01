@@ -51,7 +51,7 @@ void GameScene::Initialize() {
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 	//LoadEnemyPopDate("./Resources/enemyPop.csv");
-	UpdateEnemyPopCommands("./Resources/enemyPop.csv",&enemies_);
+	UpdateEnemyPopCommands("./Resources/enemyPop/enemyPop.csv",&enemies_);
 	ResetTime();
 
 	skydome_ = new Skydome();
