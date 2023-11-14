@@ -66,6 +66,7 @@ public: // メンバ関数
 
 	void spawnEnemy(Vector3 pos, Vector3 scale, std::list<Enemy*>* enemies);
 
+	void PvsE(std::list<Enemy*>* enemies);
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -78,10 +79,10 @@ private: // メンバ変数
 	Player* player_ = nullptr;
 	//Enemy* enemy_ = nullptr;
 
-	std::list<Enemy*> enemies_;
+	std::list<Enemy*> zWall;
 	std::list<Enemy*> floorEnemies_;
 	std::list<Enemy*> zWallEnemies_;
-	std::list<Enemy*> xWallEnemies_;
+	std::list<Enemy*> xWall;
 
 	Model* modelSkydome_ = nullptr;
 	Skydome* skydome_ = nullptr;
