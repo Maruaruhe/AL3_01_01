@@ -290,6 +290,12 @@ void GameScene::CheckAllCollision() {
 			else if((player_->GetMove().x > 0)){
 				distance.x = a.max.x - b.min.x;
 			}
+			// y軸
+			if (player_->GetMove().y < 0) {
+				distance.y = a.min.y - b.max.y;
+			} else if (player_->GetMove().y > 0) {
+				distance.y = a.max.y - b.min.y;
+			}
 		} else {
 			player_->SetOnCollision(false);
 		}
@@ -336,9 +342,15 @@ void GameScene::CheckAllCollision() {
 	}
 
 
-	if (player_->GetVelocity().x >= fabs(distance.x) ||
-	    player_->GetVelocity().y >= fabs(distance.y) ||
-	    player_->GetVelocity().z >= fabs(distance.z)) {
+	if (player_->GetVelocity().x >= fabs(distance.x)) {
+
+	}
+	if (player_->GetVelocity().y >= fabs(distance.y)) {
+
+   }
+	if (player_->GetVelocity().z >= fabs(distance.z)) {
+	
+	}
 		player_->SetPosition({posA.x - distance.x, posA.y - distance.y, posA.z - distance.z});
 	}
 	#pragma endregion

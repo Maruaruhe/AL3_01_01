@@ -37,6 +37,9 @@ public:
 	WorldTransform GiveWorld() { return worldTransform_; }
 	WorldTransform GivePreWorld() { return worldTransform_; }
 	void SetPosition(Vector3 worldtransform) { worldTransform_.translation_ = worldtransform; }
+	void SetPositionX(float x) { worldTransform_.translation_.x = x; }
+	void SetPositionY(float y) { worldTransform_.translation_.y = y; }
+	void SetPositionZ(float z) { worldTransform_.translation_.z = z; }
 
 	void DrawUI();
 
