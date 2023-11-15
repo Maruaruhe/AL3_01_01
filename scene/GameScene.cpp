@@ -102,7 +102,7 @@ void GameScene::Update() {
 	//enemy_->Update();
 	//LoadEnemyPopDate("./Resources/enemyPop.csv");
 	//UpdateEnemyPopCommands();
-	for (Enemy* enemy : zWall) {
+	for (Enemy* enemy : enemies_) {
 		enemy->Update();
 	}
 
@@ -181,15 +181,19 @@ void GameScene::Draw() {
 	//skydome_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 	//enemy_->Draw(viewProjection_);
-	for (Enemy* enemy : zWall) {
+
+	for (Enemy* enemy : enemies_) {
 		enemy->Draw(viewProjection_);
 	}
-	for (Enemy* enemy : xWall) {
-		enemy->Draw(viewProjection_);
-	}
-	for (Enemy* enemy : floorEnemies_) {
-		enemy->Draw(viewProjection_);
-	}
+	//for (Enemy* enemy : zWall) {
+	//	enemy->Draw(viewProjection_);
+	//}
+	//for (Enemy* enemy : xWall) {
+	//	enemy->Draw(viewProjection_);
+	//}
+	//for (Enemy* enemy : floorEnemies_) {
+	//	enemy->Draw(viewProjection_);
+	//}
 
 
 	/*for (EnemyBullet* bullet : enemyBullets_) {
@@ -275,8 +279,8 @@ void GameScene::CheckAllCollision() {
 	//PvsE(&xWall);
 	Vector3 distance{};
 
-	posA = player_->GetWorldPosition();
-	for (Enemy* enemy : xWall) {
+	for (Enemy* enemy : enemies_) {
+		posA = player_->GetWorldPosition();
 		AABB a = CreateAABB(player_->GiveWorld());
 		AABB b = CreateAABB(enemy->GiveWorld());
 
@@ -289,51 +293,84 @@ void GameScene::CheckAllCollision() {
 			} 
 			else if((player_->GetMove().x > 0)){
 				distance.x = a.max.x - b.min.x;
+			} else {
+				distance.x = 0;	
 			}
-		} else {
-			player_->SetOnCollision(false);
-		}
-	}
 
-	//z
-	for (Enemy* enemy : zWall) {
-		AABB a = CreateAABB(player_->GiveWorld());
-		AABB b = CreateAABB(enemy->GiveWorld());
+			if (player_->GetVelocity().x >= fabs(distance.x)){
+				player_->SetPosition({posA.x - distance.x, posA.y, posA.z});
+				player_->GiveWorld().UpdateMatrix();
+			}
 
-		if (IsCollision(a, b)) {
-			player_->SetOnCollision(true);
-
-			// z軸
+				// z軸
 			if (player_->GetMove().z < 0) {
 				distance.z = a.min.z - b.max.z;
-			}
-			else if (player_->GetMove().z > 0) {
+			} else if (player_->GetMove().z > 0) {
 				distance.z = a.max.z - b.min.z;
+			} else {
+				distance.z = 0;
 			}
-		} else {
-			player_->SetOnCollision(false);
-		}
-	}
 
-	// y
-	for (Enemy* enemy : floorEnemies_) {
-		AABB a = CreateAABB(player_->GiveWorld());
-		AABB b = CreateAABB(enemy->GiveWorld());
+			if (player_->GetVelocity().z >= fabs(distance.z)) {
+				player_->SetPosition({posA.x, posA.y, posA.z - distance.z});
+				player_->GiveWorld().UpdateMatrix();
+			}
 
-		if (IsCollision(a, b)) {
-			player_->SetOnCollision(true);
-
-			// y軸
+				// y軸
 			if (player_->GetMove().y < 0) {
 				distance.y = a.min.y - b.max.y;
-			}
-			else if (player_->GetMove().y > 0) {
+			} else if (player_->GetMove().y > 0) {
 				distance.y = a.max.y - b.min.y;
+			} else {
+				distance.y = 0;
 			}
-		} else {
-			player_->SetOnCollision(false);
+
+			if (player_->GetVelocity().y >= fabs(distance.y) && player_->GetMove().y != 0)			{
+				player_->SetPosition({posA.x, posA.y -distance.y, posA.z});
+				player_->GiveWorld().UpdateMatrix();
+			}
 		}
 	}
+
+	////z
+	//for (Enemy* enemy : zWall) {
+	//	AABB a = CreateAABB(player_->GiveWorld());
+	//	AABB b = CreateAABB(enemy->GiveWorld());
+
+	//	if (IsCollision(a, b)) {
+	//		player_->SetOnCollision(true);
+
+	//		// z軸
+	//		if (player_->GetMove().z < 0) {
+	//			distance.z = a.min.z - b.max.z;
+	//		}
+	//		else if (player_->GetMove().z > 0) {
+	//			distance.z = a.max.z - b.min.z;
+	//		}
+	//	} else {
+	//		player_->SetOnCollision(false);
+	//	}
+	//}
+
+	//// y
+	//for (Enemy* enemy : floorEnemies_) {
+	//	AABB a = CreateAABB(player_->GiveWorld());
+	//	AABB b = CreateAABB(enemy->GiveWorld());
+
+	//	if (IsCollision(a, b)) {
+	//		player_->SetOnCollision(true);
+
+	//		// y軸
+	//		if (player_->GetMove().y < 0) {
+	//			distance.y = a.min.y - b.max.y;
+	//		}
+	//		else if (player_->GetMove().y > 0) {
+	//			distance.y = a.max.y - b.min.y;
+	//		}
+	//	} else {
+	//		player_->SetOnCollision(false);
+	//	}
+	//}
 
 
 	if (player_->GetVelocity().x >= fabs(distance.x) ||
