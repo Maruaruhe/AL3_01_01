@@ -41,6 +41,7 @@ public:
 	void DrawUI();
 
 	Vector3 GetVelocity() { return {velocity.x + 0.01f, velocity.y + 0.01f, velocity.z + 0.01f}; }
+	Vector3 GetMove() { return move; }
 
 private:
 	WorldTransform worldTransform_;
@@ -68,4 +69,5 @@ private:
 
 	const float kRotSpeed = 0.02f;
 	Vector3 velocity = {0.2f, 0.2f, 0.2f};
+	Vector3 move = {0, 0, 0};
 };

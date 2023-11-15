@@ -284,10 +284,10 @@ void GameScene::CheckAllCollision() {
 			player_->SetOnCollision(true);
 
 			// x軸
-			if (input_->PushKey(DIK_A)) {
+			if (player_->GetMove().x < 0) {
 				distance.x = a.min.x - b.max.x;
-			}
-			if (input_->PushKey(DIK_D)) {
+			} 
+			else if((player_->GetMove().x > 0)){
 				distance.x = a.max.x - b.min.x;
 			}
 		} else {
@@ -304,10 +304,10 @@ void GameScene::CheckAllCollision() {
 			player_->SetOnCollision(true);
 
 			// z軸
-			if (input_->PushKey(DIK_Q)) {
+			if (player_->GetMove().z < 0) {
 				distance.z = a.min.z - b.max.z;
 			}
-			if (input_->PushKey(DIK_E)) {
+			else if (player_->GetMove().z > 0) {
 				distance.z = a.max.z - b.min.z;
 			}
 		} else {
@@ -315,7 +315,7 @@ void GameScene::CheckAllCollision() {
 		}
 	}
 
-	// z
+	// y
 	for (Enemy* enemy : floorEnemies_) {
 		AABB a = CreateAABB(player_->GiveWorld());
 		AABB b = CreateAABB(enemy->GiveWorld());
@@ -323,11 +323,11 @@ void GameScene::CheckAllCollision() {
 		if (IsCollision(a, b)) {
 			player_->SetOnCollision(true);
 
-			// z軸
-			if (input_->PushKey(DIK_S)) {
+			// y軸
+			if (player_->GetMove().y < 0) {
 				distance.y = a.min.y - b.max.y;
 			}
-			if (input_->PushKey(DIK_W)) {
+			else if (player_->GetMove().y > 0) {
 				distance.y = a.max.y - b.min.y;
 			}
 		} else {

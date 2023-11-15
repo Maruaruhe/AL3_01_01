@@ -37,7 +37,7 @@ void Player::Initialize(
 }
 
 void Player::Update(ViewProjection viewProjection) { 
-	Vector3 move = {0, 0, 0};
+	move = {0, 0, 0};
 	bullets_.remove_if([] (Bullet * bullet) {
 		if (bullet->isDead()) {
 			delete bullet;
