@@ -17,18 +17,18 @@ void RailCamera::Update() {
 	worldTransform_.translation_.z -= 0.0f;
 
 	if (input_->PushKey(DIK_LEFT)) {
-		worldTransform_.translation_.x -= 0.2f;
+		worldTransform_.rotation_.y -= 0.02f;
 	}
 	if (input_->PushKey(DIK_RIGHT)) {
-		worldTransform_.translation_.x += 0.2f;
+		worldTransform_.rotation_.y += 0.02f;
 	}
 
 	if (input_->PushKey(DIK_UP)) {
-		worldTransform_.translation_.y += 0.2f;
+		worldTransform_.rotation_.x -= 0.02f;
 	}
 
 	if (input_->PushKey(DIK_DOWN)) {
-		worldTransform_.translation_.y -= 0.2f;
+		worldTransform_.rotation_.x += 0.02f;
 	}
 
 	if (input_->PushKey(DIK_O)) {
