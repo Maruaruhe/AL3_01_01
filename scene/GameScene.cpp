@@ -102,7 +102,7 @@ void GameScene::Update() {
 	//enemy_->Update();
 	//LoadEnemyPopDate("./Resources/enemyPop.csv");
 	//UpdateEnemyPopCommands();
-	for (Enemy* enemy : zWall) {
+	for (Enemy* enemy : enemies_) {
 		enemy->Update();
 	}
 
@@ -181,7 +181,10 @@ void GameScene::Draw() {
 	//skydome_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 	//enemy_->Draw(viewProjection_);
-	for (Enemy* enemy : zWall) {
+	for (Enemy* enemy : enemies_) {
+		enemy->Draw(viewProjection_);
+	}
+	/*for (Enemy* enemy : zWall) {
 		enemy->Draw(viewProjection_);
 	}
 	for (Enemy* enemy : xWall) {
@@ -189,7 +192,7 @@ void GameScene::Draw() {
 	}
 	for (Enemy* enemy : floorEnemies_) {
 		enemy->Draw(viewProjection_);
-	}
+	}*/
 
 
 	/*for (EnemyBullet* bullet : enemyBullets_) {
@@ -215,32 +218,32 @@ void GameScene::Draw() {
 #pragma endregion
 }
 
-void GameScene::CheckAllCollision() { 
+void GameScene::CheckAllCollision() {
 	Vector3 posA, posB;
 
 	const std::list<Bullet*>& playerBullets_ = player_->GetBullets();
 	const std::list<EnemyBullet*>& eBullets_ = GetBullets();
 
-	#pragma region 自キャラと敵弾の当たり判定
+#pragma region 自キャラと敵弾の当たり判定
 	posA = player_->GetWorldPosition();
-	//posA = player_->GiveWorld().translation_;
+	// posA = player_->GiveWorld().translation_;
 
 	for (EnemyBullet* bullet : eBullets_) {
 		posB = bullet->GetWorldPosition();
 
 		Vector3 distance = Subtract(posA, posB);
-		if (std::pow(distance.x, 2) + std::pow(distance.y, 2) + std::pow(distance.z, 2) <=3 * 3) {
-			//player_->OnCollision();
+		if (std::pow(distance.x, 2) + std::pow(distance.y, 2) + std::pow(distance.z, 2) <= 3 * 3) {
+			// player_->OnCollision();
 			bullet->OnCollision();
 		}
 	}
-	#pragma endregion
+#pragma endregion
 
-	#pragma region 自弾と敵キャラの当たり判定
+#pragma region 自弾と敵キャラの当たり判定
 	for (Enemy* enemy : zWall) {
-	posA = enemy->GetWorldPosition();
+		posA = enemy->GetWorldPosition();
 
-	for (Bullet* bullet : playerBullets_) {
+		for (Bullet* bullet : playerBullets_) {
 			posB = bullet->GetWorldPosition();
 
 			Vector3 distance = Subtract(posA, posB);
@@ -249,11 +252,11 @@ void GameScene::CheckAllCollision() {
 				enemy->OnCollision();
 				bullet->OnCollision();
 			}
+		}
 	}
-	}
-	#pragma endregion
+#pragma endregion
 
-	#pragma region 自弾と敵弾の当たり判定
+#pragma region 自弾と敵弾の当たり判定
 	for (Bullet* playerBullet : playerBullets_) {
 		for (EnemyBullet* eBullet : enemyBullets_) {
 			posA = playerBullet->GetWorldPosition();
@@ -267,16 +270,16 @@ void GameScene::CheckAllCollision() {
 			}
 		}
 	}
-	#pragma endregion
+#pragma endregion
 
-    #pragma region 自と敵の当たり判定
-	//PvsE(&floorEnemies_);
-	//PvsE(&zWall);
-	//PvsE(&xWall);
+#pragma region 自と敵の当たり判定
+	// PvsE(&floorEnemies_);
+	// PvsE(&zWall);
+	// PvsE(&xWall);
 	Vector3 distance{};
 
 	posA = player_->GetWorldPosition();
-	for (Enemy* enemy : xWall) {
+	for (Enemy* enemy : enemies_) {
 		AABB a = CreateAABB(player_->GiveWorld());
 		AABB b = CreateAABB(enemy->GiveWorld());
 
@@ -286,22 +289,44 @@ void GameScene::CheckAllCollision() {
 			// x軸
 			if (player_->GetMove().x < 0) {
 				distance.x = a.min.x - b.max.x;
-			} 
-			else if((player_->GetMove().x > 0)){
+			} else if ((player_->GetMove().x > 0)) {
 				distance.x = a.max.x - b.min.x;
 			}
+
+			if (player_->GetVelocity().x >= fabs(distance.x)) {
+				player_->SetPositionX(posA.x - distance.x);
+				player_->GiveWorld().UpdateMatrix();
+			}
+
 			// y軸
 			if (player_->GetMove().y < 0) {
 				distance.y = a.min.y - b.max.y;
 			} else if (player_->GetMove().y > 0) {
 				distance.y = a.max.y - b.min.y;
 			}
+
+				if (player_->GetVelocity().y >= fabs(distance.y)) {
+				player_->SetPositionY(posA.y - distance.y);
+				player_->GiveWorld().UpdateMatrix();
+			}
+
+			// z軸
+			if (player_->GetMove().z < 0) {
+				distance.z = a.min.z - b.max.z;
+			} else if (player_->GetMove().z > 0) {
+				distance.z = a.max.z - b.min.z;
+			}
 		} else {
 			player_->SetOnCollision(false);
 		}
+
+		if (player_->GetVelocity().z >= fabs(distance.z)) {
+			player_->SetPositionZ(posA.z - distance.z);
+			player_->GiveWorld().UpdateMatrix();
+		}
 	}
 
-	//z
+	// z
 	for (Enemy* enemy : zWall) {
 		AABB a = CreateAABB(player_->GiveWorld());
 		AABB b = CreateAABB(enemy->GiveWorld());
@@ -312,8 +337,7 @@ void GameScene::CheckAllCollision() {
 			// z軸
 			if (player_->GetMove().z < 0) {
 				distance.z = a.min.z - b.max.z;
-			}
-			else if (player_->GetMove().z > 0) {
+			} else if (player_->GetMove().z > 0) {
 				distance.z = a.max.z - b.min.z;
 			}
 		} else {
@@ -332,30 +356,15 @@ void GameScene::CheckAllCollision() {
 			// y軸
 			if (player_->GetMove().y < 0) {
 				distance.y = a.min.y - b.max.y;
-			}
-			else if (player_->GetMove().y > 0) {
+			} else if (player_->GetMove().y > 0) {
 				distance.y = a.max.y - b.min.y;
 			}
 		} else {
 			player_->SetOnCollision(false);
 		}
 	}
-
-
-	if (player_->GetVelocity().x >= fabs(distance.x)) {
-
-	}
-	if (player_->GetVelocity().y >= fabs(distance.y)) {
-
-   }
-	if (player_->GetVelocity().z >= fabs(distance.z)) {
-	
-	}
-		player_->SetPosition({posA.x - distance.x, posA.y - distance.y, posA.z - distance.z});
-	}
-	#pragma endregion
-
 }
+	#pragma endregion
 
 void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) { 
 	enemyBullets_.push_back(enemyBullet);
