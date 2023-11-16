@@ -325,44 +325,6 @@ void GameScene::CheckAllCollision() {
 			player_->GiveWorld().UpdateMatrix();
 		}
 	}
-
-	// z
-	for (Enemy* enemy : zWall) {
-		AABB a = CreateAABB(player_->GiveWorld());
-		AABB b = CreateAABB(enemy->GiveWorld());
-
-		if (IsCollision(a, b)) {
-			player_->SetOnCollision(true);
-
-			// z軸
-			if (player_->GetMove().z < 0) {
-				distance.z = a.min.z - b.max.z;
-			} else if (player_->GetMove().z > 0) {
-				distance.z = a.max.z - b.min.z;
-			}
-		} else {
-			player_->SetOnCollision(false);
-		}
-	}
-
-	// y
-	for (Enemy* enemy : floorEnemies_) {
-		AABB a = CreateAABB(player_->GiveWorld());
-		AABB b = CreateAABB(enemy->GiveWorld());
-
-		if (IsCollision(a, b)) {
-			player_->SetOnCollision(true);
-
-			// y軸
-			if (player_->GetMove().y < 0) {
-				distance.y = a.min.y - b.max.y;
-			} else if (player_->GetMove().y > 0) {
-				distance.y = a.max.y - b.min.y;
-			}
-		} else {
-			player_->SetOnCollision(false);
-		}
-	}
 }
 	#pragma endregion
 
