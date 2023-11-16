@@ -1,10 +1,13 @@
 ﻿#include "RailCamera.h"
 
 void RailCamera::Initialize(Vector3 translation, Vector3 rotation) { 
+	worldTransform_.Initialize();
 	worldTransform_.translation_ = translation;
 	worldTransform_.rotation_ = rotation;
 
 	viewProjection_.Initialize();
+	viewProjection_.matView = Inverse(worldTransform_.matWorld_);
+	viewProjection_.matProjection = MakePerspectiveFovMatrix(viewProjection_.fovAngleY, viewProjection_.aspectRatio, viewProjection_.nearZ,viewProjection_.farZ);
 
 	input_ = Input::GetInstance();
 }
@@ -37,10 +40,12 @@ void RailCamera::Update() {
 	}
 
 	//ワールド行列再計算
-	worldTransform_.matWorld_ = MakeAffineMatrix(
-	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
-	//
+	//worldTransform_.UpdateMatrix();
+	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+	//worldTransform_.matWorld_ = MakeRotateXYZMatrix(worldTransform_.rotation_);
+	//worldTransform_.TransferMatrix();
 	viewProjection_.matView = Inverse(worldTransform_.matWorld_);
+	viewProjection_.matProjection = MakePerspectiveFovMatrix(viewProjection_.fovAngleY, viewProjection_.aspectRatio, viewProjection_.nearZ, viewProjection_.farZ);
 
 	//imgui
 	ImGui::Begin("Camera");

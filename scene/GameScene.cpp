@@ -54,7 +54,8 @@ void GameScene::Initialize() {
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 
 	player_ = new Player();
-	player_->Initialize(model_, reticle_, character,{0,0,30});
+	//player_->Initialize(model_, reticle_, character,{0,0,30});
+	player_->Initialize(model_, reticle_, character,{0,0,0});
 
 	debugCamera_ = new DebugCamera(100, 50);
 	AxisIndicator::GetInstance()->SetVisible(true);
@@ -80,7 +81,6 @@ void GameScene::Update() {
 
 	viewProjection_.matView = railCamera_->GetViewProjection().matView;
 	viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
-
 	viewProjection_.TransferMatrix();
 
 	player_->Update(viewProjection_);
@@ -99,9 +99,7 @@ void GameScene::Update() {
 		}
 		return false;
 	});
-	//enemy_->Update();
-	//LoadEnemyPopDate("./Resources/enemyPop.csv");
-	//UpdateEnemyPopCommands();
+
 	for (Enemy* enemy : enemies_) {
 		enemy->Update();
 	}
@@ -131,24 +129,7 @@ void GameScene::Update() {
 	player_->GiveWorld().UpdateMatrix();
 	skydome_->Update();
 
-	/*debugCamera_->Update();
-	#ifdef _DEBUG
-	if (input_->TriggerKey(DIK_R)) {
-		if (isDebugCameraActive == false) {
-			isDebugCameraActive = true;
-		} else {
-			isDebugCameraActive = false;
-		}
-	}
-	#endif
-	if (isDebugCameraActive) {
-		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-
-	    viewProjection_.TransferMatrix();
-	} else {
-		viewProjection_.UpdateMatrix();
-	}*/
+	railCamera_->SetPosition(player_->GivePreWorld().translation_);
 }
 
 void GameScene::Draw() {

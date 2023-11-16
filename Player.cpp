@@ -54,17 +54,17 @@ void Player::Update(ViewProjection viewProjection) {
 		move.x += velocity.x;
 	}
 
-	if (input_->PushKey(DIK_E)) {
+	if (input_->PushKey(DIK_W)) {
 		move.z += velocity.z;
 	}
-	if (input_->PushKey(DIK_Q)) {
+	if (input_->PushKey(DIK_S)) {
 		move.z -= velocity.z;
 	}
 
-	if (input_->PushKey(DIK_W)) {
+	if (input_->PushKey(DIK_E)) {
 		move.y += velocity.y;
 	}
-	if (input_->PushKey(DIK_S)) {
+	if (input_->PushKey(DIK_Q)) {
 		move.y -= velocity.y;
 	}
 

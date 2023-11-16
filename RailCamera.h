@@ -12,6 +12,8 @@ public:
 
 	void Update();
 
+	void SetPosition(Vector3 translation) { worldTransform_.translation_ = translation; }
+
 	const ViewProjection& GetViewProjection() { return viewProjection_; }
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 
