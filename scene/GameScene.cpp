@@ -46,8 +46,8 @@ void GameScene::Initialize() {
 	//sprite_ = Sprite::Create(character, {100, 50});
 	worldTransform_.Initialize();
 
-	viewProjection_.farZ = 1000;
 	viewProjection_.Initialize();
+	viewProjection_.farZ = 1000;
 
 	model_ = Model::Create();
 	reticle_ = Model::Create();
@@ -129,7 +129,9 @@ void GameScene::Update() {
 	player_->GiveWorld().UpdateMatrix();
 	skydome_->Update();
 
-	railCamera_->SetPosition(player_->GivePreWorld().translation_);
+	railCamera_->SetPosition(
+	    {player_->GivePreWorld().translation_.x, player_->GivePreWorld().translation_.y + 1.0f,
+	     player_->GivePreWorld().translation_.z});
 }
 
 void GameScene::Draw() {

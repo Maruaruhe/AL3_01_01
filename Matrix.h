@@ -31,3 +31,5 @@ Matrix4x4 MakeViewportMatrix(
 
 float InverseNum(const Matrix4x4& m, int a, int b, int c, int d, int e, int f, int g, int h);
 float InverseNum2(const Matrix4x4& m, int a, int b, int c, int d, int e, int f);
+
+float Det(Matrix4x4 matrix);

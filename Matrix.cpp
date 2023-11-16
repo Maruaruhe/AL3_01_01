@@ -57,91 +57,149 @@ Matrix4x4 Multiply(const Matrix4x4& m1, const Matrix4x4& m2) {
 
 	return resultMatrix;
 }
-Matrix4x4 Inverse(const Matrix4x4& m) {
-	Matrix4x4 resultInverse = {};
-	float resultNum;
-	resultNum = InverseNum(m, 1, 1, 2, 2, 3, 3, 4, 4) + InverseNum(m, 1, 1, 2, 3, 3, 4, 4, 2) +
-	            InverseNum(m, 1, 1, 2, 4, 3, 2, 4, 3) - InverseNum(m, 1, 1, 2, 4, 3, 3, 4, 2) -
-	            InverseNum(m, 1, 1, 2, 3, 3, 2, 4, 4) - InverseNum(m, 1, 1, 2, 2, 3, 4, 4, 3) -
-	            InverseNum(m, 1, 2, 2, 1, 3, 3, 4, 4) - InverseNum(m, 1, 3, 2, 1, 3, 4, 4, 2) -
-	            InverseNum(m, 1, 4, 2, 1, 3, 2, 4, 3) + InverseNum(m, 1, 4, 2, 1, 3, 3, 4, 2) +
-	            InverseNum(m, 1, 3, 2, 1, 3, 2, 4, 4) + InverseNum(m, 1, 2, 2, 1, 3, 4, 4, 3) +
-	            InverseNum(m, 1, 2, 2, 3, 3, 1, 4, 4) + InverseNum(m, 1, 3, 2, 4, 3, 1, 4, 2) +
-	            InverseNum(m, 1, 4, 2, 2, 3, 1, 4, 3) - InverseNum(m, 1, 4, 2, 3, 3, 1, 4, 2) -
-	            InverseNum(m, 1, 3, 2, 2, 3, 1, 4, 4) - InverseNum(m, 1, 2, 2, 4, 3, 1, 4, 3) -
-	            InverseNum(m, 1, 2, 2, 3, 3, 2, 4, 1) - InverseNum(m, 1, 3, 2, 4, 3, 2, 4, 1) -
-	            InverseNum(m, 1, 4, 2, 2, 3, 3, 4, 1) + InverseNum(m, 1, 4, 2, 3, 3, 2, 4, 1) +
-	            InverseNum(m, 1, 3, 2, 2, 3, 4, 4, 1) + InverseNum(m, 1, 2, 2, 4, 3, 3, 4, 1);
+float Det(Matrix4x4 matrix) {
+	float det = 0.0f;
 
-	resultInverse.m[0][0] = (InverseNum2(m, 2, 2, 3, 3, 4, 4) + InverseNum2(m, 2, 3, 3, 4, 4, 2) +
-	                         InverseNum2(m, 2, 4, 3, 2, 4, 3) - InverseNum2(m, 2, 4, 3, 3, 4, 2) -
-	                         InverseNum2(m, 2, 3, 3, 2, 4, 4) - InverseNum2(m, 2, 2, 3, 4, 4, 3)) *
-	                        (1 / resultNum);
-	resultInverse.m[0][1] = (InverseNum2(m, 1, 4, 3, 3, 4, 2) + InverseNum2(m, 1, 3, 3, 2, 4, 4) +
-	                         InverseNum2(m, 1, 2, 3, 4, 4, 3) - InverseNum2(m, 1, 2, 3, 3, 4, 4) -
-	                         InverseNum2(m, 1, 3, 3, 4, 4, 2) - InverseNum2(m, 1, 4, 3, 2, 4, 3)) *
-	                        (1 / resultNum);
-	resultInverse.m[0][2] = (InverseNum2(m, 1, 2, 2, 3, 4, 4) + InverseNum2(m, 1, 3, 2, 4, 4, 2) +
-	                         InverseNum2(m, 1, 4, 2, 2, 4, 3) - InverseNum2(m, 1, 4, 2, 3, 4, 2) -
-	                         InverseNum2(m, 1, 3, 2, 2, 4, 4) - InverseNum2(m, 1, 2, 2, 4, 4, 3)) *
-	                        (1 / resultNum);
-	resultInverse.m[0][3] = (InverseNum2(m, 1, 4, 2, 3, 3, 2) + InverseNum2(m, 1, 3, 2, 2, 3, 4) +
-	                         InverseNum2(m, 1, 2, 2, 4, 3, 3) - InverseNum2(m, 1, 2, 2, 3, 3, 4) -
-	                         InverseNum2(m, 1, 3, 2, 4, 3, 2) - InverseNum2(m, 1, 4, 2, 2, 3, 3)) *
-	                        (1 / resultNum);
+	det = matrix.m[0][0] * matrix.m[1][1] * matrix.m[2][2] * matrix.m[3][3] +
+	      matrix.m[0][0] * matrix.m[1][2] * matrix.m[2][3] * matrix.m[3][1] +
+	      matrix.m[0][0] * matrix.m[1][3] * matrix.m[2][1] * matrix.m[3][2]
 
-	resultInverse.m[1][0] = (InverseNum2(m, 2, 4, 3, 3, 4, 1) + InverseNum2(m, 2, 3, 3, 1, 4, 4) +
-	                         InverseNum2(m, 2, 1, 3, 4, 4, 3) - InverseNum2(m, 2, 1, 3, 3, 4, 4) -
-	                         InverseNum2(m, 2, 3, 3, 4, 4, 1) - InverseNum2(m, 2, 4, 3, 1, 4, 3)) *
-	                        (1 / resultNum);
-	resultInverse.m[1][1] = (InverseNum2(m, 1, 1, 3, 3, 4, 4) + InverseNum2(m, 1, 3, 3, 4, 4, 1) +
-	                         InverseNum2(m, 1, 4, 3, 1, 4, 3) - InverseNum2(m, 1, 4, 3, 3, 4, 1) -
-	                         InverseNum2(m, 1, 3, 3, 1, 4, 4) - InverseNum2(m, 1, 1, 3, 4, 4, 3)) *
-	                        (1 / resultNum);
-	resultInverse.m[1][2] = (InverseNum2(m, 1, 4, 2, 3, 4, 1) + InverseNum2(m, 1, 3, 2, 1, 4, 4) +
-	                         InverseNum2(m, 1, 1, 2, 4, 4, 3) - InverseNum2(m, 1, 1, 2, 3, 4, 4) -
-	                         InverseNum2(m, 1, 3, 2, 4, 4, 1) - InverseNum2(m, 1, 4, 2, 1, 4, 3)) *
-	                        (1 / resultNum);
-	resultInverse.m[1][3] = (InverseNum2(m, 1, 1, 2, 3, 3, 4) + InverseNum2(m, 1, 3, 2, 4, 3, 1) +
-	                         InverseNum2(m, 1, 4, 2, 1, 3, 3) - InverseNum2(m, 1, 4, 2, 3, 3, 1) -
-	                         InverseNum2(m, 1, 3, 2, 1, 3, 4) - InverseNum2(m, 1, 1, 2, 4, 3, 3)) *
-	                        (1 / resultNum);
+	      - matrix.m[0][0] * matrix.m[1][3] * matrix.m[2][2] * matrix.m[3][1] -
+	      matrix.m[0][0] * matrix.m[1][2] * matrix.m[2][1] * matrix.m[3][3] -
+	      matrix.m[0][0] * matrix.m[1][1] * matrix.m[2][3] * matrix.m[3][2]
 
-	resultInverse.m[2][0] = (InverseNum2(m, 2, 1, 3, 2, 4, 4) + InverseNum2(m, 2, 2, 3, 4, 4, 1) +
-	                         InverseNum2(m, 2, 4, 3, 1, 4, 2) - InverseNum2(m, 2, 4, 3, 2, 4, 1) -
-	                         InverseNum2(m, 2, 2, 3, 1, 4, 4) - InverseNum2(m, 2, 1, 3, 4, 4, 2)) *
-	                        (1 / resultNum);
-	resultInverse.m[2][1] = (InverseNum2(m, 1, 4, 3, 2, 4, 1) + InverseNum2(m, 1, 2, 3, 1, 4, 4) +
-	                         InverseNum2(m, 1, 1, 3, 4, 4, 2) - InverseNum2(m, 1, 1, 3, 2, 4, 4) -
-	                         InverseNum2(m, 1, 2, 3, 4, 4, 1) - InverseNum2(m, 1, 4, 3, 1, 4, 2)) *
-	                        (1 / resultNum);
-	resultInverse.m[2][2] = (InverseNum2(m, 1, 1, 2, 2, 4, 4) + InverseNum2(m, 1, 2, 2, 4, 4, 1) +
-	                         InverseNum2(m, 1, 4, 2, 1, 4, 2) - InverseNum2(m, 1, 4, 2, 2, 4, 1) -
-	                         InverseNum2(m, 1, 2, 2, 1, 4, 4) - InverseNum2(m, 1, 1, 2, 4, 4, 2)) *
-	                        (1 / resultNum);
-	resultInverse.m[2][3] = (InverseNum2(m, 1, 4, 2, 2, 3, 1) + InverseNum2(m, 1, 2, 2, 1, 3, 4) +
-	                         InverseNum2(m, 1, 1, 2, 4, 3, 2) - InverseNum2(m, 1, 1, 2, 2, 3, 4) -
-	                         InverseNum2(m, 1, 2, 2, 4, 3, 1) - InverseNum2(m, 1, 4, 2, 1, 3, 2)) *
-	                        (1 / resultNum);
+	      - matrix.m[0][1] * matrix.m[1][0] * matrix.m[2][2] * matrix.m[3][3] -
+	      matrix.m[0][2] * matrix.m[1][0] * matrix.m[2][3] * matrix.m[3][1] -
+	      matrix.m[0][3] * matrix.m[1][0] * matrix.m[2][1] * matrix.m[3][2]
 
-	resultInverse.m[3][0] = (InverseNum2(m, 2, 3, 3, 2, 4, 1) + InverseNum2(m, 2, 2, 3, 1, 4, 1) +
-	                         InverseNum2(m, 2, 1, 3, 3, 4, 2) - InverseNum2(m, 2, 1, 3, 2, 4, 3) -
-	                         InverseNum2(m, 2, 2, 3, 3, 4, 1) - InverseNum2(m, 2, 3, 3, 1, 4, 2)) *
-	                        (1 / resultNum);
-	resultInverse.m[3][1] = (InverseNum2(m, 1, 1, 3, 2, 4, 3) + InverseNum2(m, 1, 2, 3, 3, 4, 1) +
-	                         InverseNum2(m, 1, 3, 3, 1, 4, 2) - InverseNum2(m, 1, 3, 3, 2, 4, 1) -
-	                         InverseNum2(m, 1, 2, 3, 1, 4, 3) - InverseNum2(m, 1, 1, 3, 3, 4, 2)) *
-	                        (1 / resultNum);
-	resultInverse.m[3][2] = (InverseNum2(m, 1, 3, 2, 2, 4, 1) + InverseNum2(m, 1, 2, 2, 1, 4, 3) +
-	                         InverseNum2(m, 1, 1, 2, 3, 4, 2) - InverseNum2(m, 1, 1, 2, 2, 4, 3) -
-	                         InverseNum2(m, 1, 2, 2, 3, 4, 1) - InverseNum2(m, 1, 3, 2, 1, 4, 2)) *
-	                        (1 / resultNum);
-	resultInverse.m[3][3] = (InverseNum2(m, 1, 1, 2, 2, 3, 3) + InverseNum2(m, 1, 2, 2, 3, 3, 1) +
-	                         InverseNum2(m, 1, 3, 2, 1, 3, 2) - InverseNum2(m, 1, 3, 2, 2, 3, 1) -
-	                         InverseNum2(m, 1, 2, 2, 1, 3, 3) - InverseNum2(m, 1, 1, 2, 3, 3, 2)) *
-	                        (1 / resultNum);
+	      + matrix.m[0][3] * matrix.m[1][0] * matrix.m[2][2] * matrix.m[3][1] +
+	      matrix.m[0][2] * matrix.m[1][0] * matrix.m[2][1] * matrix.m[3][3] +
+	      matrix.m[0][1] * matrix.m[1][0] * matrix.m[2][3] * matrix.m[3][2]
 
-	return resultInverse;
+	      + matrix.m[0][1] * matrix.m[1][2] * matrix.m[2][0] * matrix.m[3][3] +
+	      matrix.m[0][2] * matrix.m[1][3] * matrix.m[2][0] * matrix.m[3][1] +
+	      matrix.m[0][3] * matrix.m[1][1] * matrix.m[2][0] * matrix.m[3][2]
+
+	      - matrix.m[0][3] * matrix.m[1][2] * matrix.m[2][0] * matrix.m[3][1] -
+	      matrix.m[0][2] * matrix.m[1][1] * matrix.m[2][0] * matrix.m[3][3] -
+	      matrix.m[0][1] * matrix.m[1][3] * matrix.m[2][0] * matrix.m[3][2]
+
+	      - matrix.m[0][1] * matrix.m[1][2] * matrix.m[2][3] * matrix.m[3][0] -
+	      matrix.m[0][2] * matrix.m[1][3] * matrix.m[2][1] * matrix.m[3][0] -
+	      matrix.m[0][3] * matrix.m[1][1] * matrix.m[2][2] * matrix.m[3][0]
+
+	      + matrix.m[0][3] * matrix.m[1][2] * matrix.m[2][1] * matrix.m[3][0] +
+	      matrix.m[0][2] * matrix.m[1][1] * matrix.m[2][3] * matrix.m[3][0] +
+	      matrix.m[0][1] * matrix.m[1][3] * matrix.m[2][2] * matrix.m[3][0];
+
+	return det;
+}
+
+Matrix4x4 Inverse(const Matrix4x4& matrix) {
+	Matrix4x4 matrix1 = {};
+	float det = Det(matrix);
+
+	matrix1.m[0][0] = (1.0f / det) * (matrix.m[1][1] * matrix.m[2][2] * matrix.m[3][3] +
+	                                  matrix.m[1][2] * matrix.m[2][3] * matrix.m[3][1] +
+	                                  matrix.m[1][3] * matrix.m[2][1] * matrix.m[3][2] -
+	                                  matrix.m[1][3] * matrix.m[2][2] * matrix.m[3][1] -
+	                                  matrix.m[1][2] * matrix.m[2][1] * matrix.m[3][3] -
+	                                  matrix.m[1][1] * matrix.m[2][3] * matrix.m[3][2]);
+	matrix1.m[0][1] = (1.0f / det) * (-1 * matrix.m[0][1] * matrix.m[2][2] * matrix.m[3][3] -
+	                                  matrix.m[0][2] * matrix.m[2][3] * matrix.m[3][1] -
+	                                  matrix.m[0][3] * matrix.m[2][1] * matrix.m[3][2] +
+	                                  matrix.m[0][3] * matrix.m[2][2] * matrix.m[3][1] +
+	                                  matrix.m[0][2] * matrix.m[2][1] * matrix.m[3][3] +
+	                                  matrix.m[0][1] * matrix.m[2][3] * matrix.m[3][2]);
+	matrix1.m[0][2] = (1.0f / det) * (matrix.m[0][1] * matrix.m[1][2] * matrix.m[3][3] +
+	                                  matrix.m[0][2] * matrix.m[1][3] * matrix.m[3][1] +
+	                                  matrix.m[0][3] * matrix.m[1][1] * matrix.m[3][2] -
+	                                  matrix.m[0][3] * matrix.m[1][2] * matrix.m[3][1] -
+	                                  matrix.m[0][2] * matrix.m[1][1] * matrix.m[3][3] -
+	                                  matrix.m[0][1] * matrix.m[1][3] * matrix.m[3][2]);
+	matrix1.m[0][3] = (1.0f / det) * (-1 * matrix.m[0][1] * matrix.m[1][2] * matrix.m[2][3] -
+	                                  matrix.m[0][2] * matrix.m[1][3] * matrix.m[2][1] -
+	                                  matrix.m[0][3] * matrix.m[1][1] * matrix.m[2][2] +
+	                                  matrix.m[0][3] * matrix.m[1][2] * matrix.m[2][1] +
+	                                  matrix.m[0][2] * matrix.m[1][1] * matrix.m[2][3] +
+	                                  matrix.m[0][1] * matrix.m[1][3] * matrix.m[2][2]);
+
+	matrix1.m[1][0] = (1.0f / det) * (-1 * matrix.m[1][0] * matrix.m[2][2] * matrix.m[3][3] -
+	                                  matrix.m[1][2] * matrix.m[2][3] * matrix.m[3][0] -
+	                                  matrix.m[1][3] * matrix.m[2][0] * matrix.m[3][2] +
+	                                  matrix.m[1][3] * matrix.m[2][2] * matrix.m[3][0] +
+	                                  matrix.m[1][2] * matrix.m[2][0] * matrix.m[3][3] +
+	                                  matrix.m[1][0] * matrix.m[2][3] * matrix.m[3][2]);
+	matrix1.m[1][1] = (1.0f / det) * (matrix.m[0][0] * matrix.m[2][2] * matrix.m[3][3] +
+	                                  matrix.m[0][2] * matrix.m[2][3] * matrix.m[3][0] +
+	                                  matrix.m[0][3] * matrix.m[2][0] * matrix.m[3][2] -
+	                                  matrix.m[0][3] * matrix.m[2][2] * matrix.m[3][0] -
+	                                  matrix.m[0][2] * matrix.m[2][0] * matrix.m[3][3] -
+	                                  matrix.m[0][0] * matrix.m[2][3] * matrix.m[3][2]);
+	matrix1.m[1][2] = (1.0f / det) * (-1 * matrix.m[0][0] * matrix.m[1][2] * matrix.m[3][3] -
+	                                  matrix.m[0][2] * matrix.m[1][3] * matrix.m[3][0] -
+	                                  matrix.m[0][3] * matrix.m[1][0] * matrix.m[3][2] +
+	                                  matrix.m[0][3] * matrix.m[1][2] * matrix.m[3][0] +
+	                                  matrix.m[0][2] * matrix.m[1][0] * matrix.m[3][3] +
+	                                  matrix.m[0][0] * matrix.m[1][3] * matrix.m[3][2]);
+	matrix1.m[1][3] = (1.0f / det) * (matrix.m[0][0] * matrix.m[1][2] * matrix.m[2][3] +
+	                                  matrix.m[0][2] * matrix.m[1][3] * matrix.m[2][0] +
+	                                  matrix.m[0][3] * matrix.m[1][0] * matrix.m[2][2] -
+	                                  matrix.m[0][3] * matrix.m[1][2] * matrix.m[2][0] -
+	                                  matrix.m[0][2] * matrix.m[1][0] * matrix.m[2][3] -
+	                                  matrix.m[0][0] * matrix.m[1][3] * matrix.m[2][2]);
+
+	matrix1.m[2][0] = (1.0f / det) * (matrix.m[1][0] * matrix.m[2][1] * matrix.m[3][3] +
+	                                  matrix.m[1][1] * matrix.m[2][3] * matrix.m[3][0] +
+	                                  matrix.m[1][3] * matrix.m[2][0] * matrix.m[3][1] -
+	                                  matrix.m[1][3] * matrix.m[2][1] * matrix.m[3][0] -
+	                                  matrix.m[1][1] * matrix.m[2][0] * matrix.m[3][3] -
+	                                  matrix.m[1][0] * matrix.m[2][3] * matrix.m[3][1]);
+	matrix1.m[2][1] = (1.0f / det) * (-1 * matrix.m[0][0] * matrix.m[2][1] * matrix.m[3][3] -
+	                                  matrix.m[0][1] * matrix.m[2][3] * matrix.m[3][0] -
+	                                  matrix.m[0][3] * matrix.m[2][0] * matrix.m[3][1] +
+	                                  matrix.m[0][3] * matrix.m[2][1] * matrix.m[3][0] +
+	                                  matrix.m[0][1] * matrix.m[2][0] * matrix.m[3][3] +
+	                                  matrix.m[0][0] * matrix.m[2][3] * matrix.m[3][1]);
+	matrix1.m[2][2] = (1.0f / det) * (matrix.m[0][0] * matrix.m[1][1] * matrix.m[3][3] +
+	                                  matrix.m[0][1] * matrix.m[1][3] * matrix.m[3][0] +
+	                                  matrix.m[0][3] * matrix.m[1][0] * matrix.m[3][1] -
+	                                  matrix.m[0][3] * matrix.m[1][1] * matrix.m[3][0] -
+	                                  matrix.m[0][1] * matrix.m[1][0] * matrix.m[3][3] -
+	                                  matrix.m[0][0] * matrix.m[1][3] * matrix.m[3][1]);
+	matrix1.m[2][3] = (1.0f / det) * (-1 * matrix.m[0][0] * matrix.m[1][1] * matrix.m[2][3] -
+	                                  matrix.m[0][1] * matrix.m[1][3] * matrix.m[2][0] -
+	                                  matrix.m[0][3] * matrix.m[1][0] * matrix.m[2][1] +
+	                                  matrix.m[0][3] * matrix.m[1][1] * matrix.m[2][0] +
+	                                  matrix.m[0][1] * matrix.m[1][0] * matrix.m[2][3] +
+	                                  matrix.m[0][0] * matrix.m[1][3] * matrix.m[2][1]);
+
+	matrix1.m[3][0] = (1.0f / det) * (-1 * matrix.m[1][0] * matrix.m[2][1] * matrix.m[3][2] -
+	                                  matrix.m[1][1] * matrix.m[2][2] * matrix.m[3][0] -
+	                                  matrix.m[1][2] * matrix.m[2][0] * matrix.m[3][1] +
+	                                  matrix.m[1][2] * matrix.m[2][1] * matrix.m[3][0] +
+	                                  matrix.m[1][1] * matrix.m[2][0] * matrix.m[3][2] +
+	                                  matrix.m[1][0] * matrix.m[2][2] * matrix.m[3][1]);
+	matrix1.m[3][1] = (1.0f / det) * (matrix.m[0][0] * matrix.m[2][1] * matrix.m[3][2] +
+	                                  matrix.m[0][1] * matrix.m[2][2] * matrix.m[3][0] +
+	                                  matrix.m[0][2] * matrix.m[2][0] * matrix.m[3][1] -
+	                                  matrix.m[0][2] * matrix.m[2][1] * matrix.m[3][0] -
+	                                  matrix.m[0][1] * matrix.m[2][0] * matrix.m[3][2] -
+	                                  matrix.m[0][0] * matrix.m[2][2] * matrix.m[3][1]);
+	matrix1.m[3][2] = (1.0f / det) * (-1 * matrix.m[0][0] * matrix.m[1][1] * matrix.m[3][2] -
+	                                  matrix.m[0][1] * matrix.m[1][2] * matrix.m[3][0] -
+	                                  matrix.m[0][2] * matrix.m[1][0] * matrix.m[3][1] +
+	                                  matrix.m[0][2] * matrix.m[1][1] * matrix.m[3][0] +
+	                                  matrix.m[0][1] * matrix.m[1][0] * matrix.m[3][2] +
+	                                  matrix.m[0][0] * matrix.m[1][2] * matrix.m[3][1]);
+	matrix1.m[3][3] = (1.0f / det) * (matrix.m[0][0] * matrix.m[1][1] * matrix.m[2][2] +
+	                                  matrix.m[0][1] * matrix.m[1][2] * matrix.m[2][0] +
+	                                  matrix.m[0][2] * matrix.m[1][0] * matrix.m[2][1] -
+	                                  matrix.m[0][2] * matrix.m[1][1] * matrix.m[2][0] -
+	                                  matrix.m[0][1] * matrix.m[1][0] * matrix.m[2][2] -
+	                                  matrix.m[0][0] * matrix.m[1][2] * matrix.m[2][1]);
+
+	return matrix1;
 }
 
 float InverseNum(const Matrix4x4& m, int a, int b, int c, int d, int e, int f, int g, int h) {
@@ -359,3 +417,4 @@ Matrix4x4 MakeViewportMatrix(
 
 	return resultViewport;
 }
+
