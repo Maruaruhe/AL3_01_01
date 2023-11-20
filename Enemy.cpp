@@ -13,7 +13,7 @@ Enemy::~Enemy() {
 void Enemy::Initialize(Model* model, const Vector3& position, const Vector3& scale) {
 	model_ = Model::Create();
 	assert(model);
-	textureHandle_ = TextureManager::Load("Angel.png");
+	textureHandle_ = TextureManager::Load("floor.png");
 	model_ = model;
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;

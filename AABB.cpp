@@ -1,7 +1,5 @@
 #include "AABB.h"
 
-
-
 AABB CreateAABB(WorldTransform worldTransform) {
 	AABB aabb{};
 	aabb.min = {
