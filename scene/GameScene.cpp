@@ -15,18 +15,6 @@ GameScene::~GameScene() {
 	delete player_;
 	delete debugCamera_;
 	//delete enemy_;
-	for (Enemy* enemy : enemies_) {
-		delete enemy;
-	}
-	for (Enemy* enemy : zWall) {
-		delete enemy;
-	}
-	for (Enemy* enemy : xWall) {
-		delete enemy;
-	}
-	for (Enemy* enemy : floorEnemies_) {
-		delete enemy;
-	}
 	for (EnemyBullet* bullet : enemyBullets_) {
 		delete bullet;
 	}
@@ -61,10 +49,7 @@ void GameScene::Initialize() {
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 	//LoadEnemyPopDate("./Resources/enemyPop.csv");
-	UpdateEnemyPopCommands("./Resources/enemyPop/enemyPop.csv",&enemies_);
-	UpdateEnemyPopCommands("./Resources/enemyPop/zWall.csv",&zWall);
-	UpdateEnemyPopCommands("./Resources/enemyPop/xWall.csv",&xWall);
-	UpdateEnemyPopCommands("./Resources/enemyPop/floor.csv",&floorEnemies_);
+	UpdateEnemyPopCommands("./Resources/enemyPop/enemyPop.csv",&walls_);
 	ResetTime();
 
 	skydome_ = new Skydome();
@@ -100,22 +85,9 @@ void GameScene::Update() {
 		return false;
 	});
 
-	for (Enemy* enemy : enemies_) {
+	for (Enemy* enemy : walls_) {
 		enemy->Update();
 	}
-
-	for (Enemy* enemy : zWall) {
-		enemy->Update();
-	}
-	for (Enemy* enemy : xWall) {
-		enemy->Update();
-	}
-	for (Enemy* enemy : floorEnemies_) {
-		enemy->Update();
-	}
-
-
-
 
 
 	for (TimedCall* timedCall : timedCalls_) {
@@ -164,7 +136,7 @@ void GameScene::Draw() {
 	//skydome_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 	//enemy_->Draw(viewProjection_);
-	for (Enemy* enemy : enemies_) {
+	for (Enemy* enemy : walls_) {
 		enemy->Draw(viewProjection_);
 	}
 	/*for (Enemy* enemy : zWall) {
@@ -223,7 +195,7 @@ void GameScene::CheckAllCollision() {
 #pragma endregion
 
 #pragma region 自弾と敵キャラの当たり判定
-	for (Enemy* enemy : zWall) {
+	/*for (Enemy* enemy : zWall) {
 		posA = enemy->GetWorldPosition();
 
 		for (Bullet* bullet : playerBullets_) {
@@ -236,7 +208,7 @@ void GameScene::CheckAllCollision() {
 				bullet->OnCollision();
 			}
 		}
-	}
+	}*/
 #pragma endregion
 
 #pragma region 自弾と敵弾の当たり判定
@@ -262,7 +234,7 @@ void GameScene::CheckAllCollision() {
 	Vector3 distance{};
 
 	posA = player_->GetWorldPosition();
-	for (Enemy* enemy : enemies_) {
+	for (Enemy* enemy : walls_) {
 		AABB a = CreateAABB(player_->GiveWorld());
 		AABB b = CreateAABB(enemy->GiveWorld());
 
@@ -317,19 +289,6 @@ void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
 
 void GameScene::Fire() {
 	assert(player_);
-	for (Enemy* enemy : zWall) {
-		Vector3 distance = Subtract(enemy->GetWorldPosition(), player_->GetWorldPosition());
-		Vector3 normalize = Normalize(distance);
-		Vector3 velocity = {};
-		velocity.x = -normalize.x;
-		velocity.y = -normalize.y;
-		velocity.z = -normalize.z;
-
-		EnemyBullet* newBullet = new EnemyBullet();
-		newBullet->Initialize(model_, enemy->GetWorldPosition(), velocity);
-
-		enemyBullets_.push_back(newBullet);
-	}
 }
 
 void GameScene::ResetTime() {
